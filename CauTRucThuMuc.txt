@@ -1,0 +1,11 @@
+Thư mục "Source Code": Chứa toàn bộ mã nguồn cho đồ án.
+
+Thư mục "Data": Chứa các tệp tin dữ liệu được sử dụng cho đồ án.
+
+Thư mục "Documentation": Chứa tài liệu hướng dẫn và tài liệu kỹ thuật cho đồ án.
+
+Thư mục "Resources": Chứa các tài nguyên (hình ảnh, tệp tin, v.v.) được sử dụng cho đồ án.
+
+Thư mục "Testing": Chứa các tệp tin liên quan đến việc kiểm tra đồ án.
+
+Thư mục "Build": Chứa các tệp tin liên quan đến việc xây dựng và biên dịch đồ án.

@@ -1,0 +1,9 @@
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-gap: 200px;
+    justify-items: center;
+    margin: 0 auto; /* To center the cards within the container */
+    max-width: 1500px; /* Optionally set a max-width to prevent cards from spanning too wide */
+  }
+  

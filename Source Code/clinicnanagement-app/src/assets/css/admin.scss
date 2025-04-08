@@ -1,0 +1,26 @@
+.paddingAll {
+    padding: 10px 10px 10px 10px;
+
+    .userTotal {
+        font-weight: 700;
+    }
+
+    .userTotalCount {
+        font-size: 14px;
+    }
+}
+
+.iconUserCount {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.gradient {
+    background: #99ccff;
+}
+
+.bgColor {
+    min-height: 100vh;
+    background: #ECEFF1;
+    background: linear-gradient(158deg, rgb(224, 224, 224) 0%, rrgb(233, 237, 254) 100%);
+}

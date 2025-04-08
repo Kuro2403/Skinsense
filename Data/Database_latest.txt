@@ -1,0 +1,998 @@
+USE [master]
+GO
+/****** Object:  Database [clinic_kl]    Script Date: 7/30/2023 7:16:25 PM ******/
+CREATE DATABASE [clinic_kl]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'clinic_kl', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\clinic_kl.mdf' , SIZE = 73728KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'clinic_kl_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\clinic_kl_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = OFF
+GO
+ALTER DATABASE [clinic_kl] SET COMPATIBILITY_LEVEL = 160
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [clinic_kl].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [clinic_kl] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [clinic_kl] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [clinic_kl] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [clinic_kl] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [clinic_kl] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [clinic_kl] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [clinic_kl] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [clinic_kl] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [clinic_kl] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [clinic_kl] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [clinic_kl] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [clinic_kl] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [clinic_kl] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [clinic_kl] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [clinic_kl] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [clinic_kl] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [clinic_kl] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [clinic_kl] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [clinic_kl] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [clinic_kl] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [clinic_kl] SET READ_COMMITTED_SNAPSHOT ON 
+GO
+ALTER DATABASE [clinic_kl] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [clinic_kl] SET RECOVERY FULL 
+GO
+ALTER DATABASE [clinic_kl] SET  MULTI_USER 
+GO
+ALTER DATABASE [clinic_kl] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [clinic_kl] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [clinic_kl] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [clinic_kl] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [clinic_kl] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [clinic_kl] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'clinic_kl', N'ON'
+GO
+ALTER DATABASE [clinic_kl] SET QUERY_STORE = ON
+GO
+ALTER DATABASE [clinic_kl] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
+GO
+USE [clinic_kl]
+GO
+/****** Object:  User [sa1]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE USER [sa1] FOR LOGIN [sa1] WITH DEFAULT_SCHEMA=[sa1]
+GO
+/****** Object:  Schema [sa1]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE SCHEMA [sa1]
+GO
+/****** Object:  Table [dbo].[__EFMigrationsHistory]    Script Date: 7/30/2023 7:16:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[__EFMigrationsHistory](
+	[MigrationId] [nvarchar](150) NOT NULL,
+	[ProductVersion] [nvarchar](32) NOT NULL,
+ CONSTRAINT [PK___EFMigrationsHistory] PRIMARY KEY CLUSTERED 
+(
+	[MigrationId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Account]    Script Date: 7/30/2023 7:16:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Account](
+	[AccountID] [int] IDENTITY(1,1) NOT NULL,
+	[Password] [nvarchar](max) NOT NULL,
+	[Mail] [nvarchar](max) NULL,
+	[RoleID] [int] NOT NULL,
+ CONSTRAINT [PK_Account] PRIMARY KEY CLUSTERED 
+(
+	[AccountID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Appointment]    Script Date: 7/30/2023 7:16:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Appointment](
+	[AppointmentID] [int] IDENTITY(1,1) NOT NULL,
+	[AppointmentDate] [nvarchar](max) NOT NULL,
+	[AppointmentTime] [nvarchar](max) NOT NULL,
+	[PatientID] [int] NOT NULL,
+	[DoctorID] [int] NOT NULL,
+ CONSTRAINT [PK_Appointment] PRIMARY KEY CLUSTERED 
+(
+	[AppointmentID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[DermatologicalDisease]    Script Date: 7/30/2023 7:16:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[DermatologicalDisease](
+	[DiseaseID] [int] IDENTITY(1,1) NOT NULL,
+	[DiseaseName] [nvarchar](max) NOT NULL,
+	[Description] [nvarchar](max) NOT NULL,
+	[Symptoms] [nvarchar](max) NOT NULL,
+	[Causes] [nvarchar](max) NOT NULL,
+	[Diagnosis] [nvarchar](max) NOT NULL,
+	[Treatment] [nvarchar](max) NOT NULL,
+	[Prevention] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_DermatologicalDisease] PRIMARY KEY CLUSTERED 
+(
+	[DiseaseID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[DetailDoctor]    Script Date: 7/30/2023 7:16:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[DetailDoctor](
+	[DetailDoctorID] [int] IDENTITY(1,1) NOT NULL,
+	[Specialty] [nvarchar](max) NULL,
+	[Hospital] [nvarchar](max) NULL,
+	[YearsOfExperience] [nvarchar](max) NULL,
+	[DoctorID] [int] NOT NULL,
+ CONSTRAINT [PK_DetailDoctor] PRIMARY KEY CLUSTERED 
+(
+	[DetailDoctorID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[DetailSpecialist]    Script Date: 7/30/2023 7:16:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[DetailSpecialist](
+	[DetailSpecialistID] [int] IDENTITY(1,1) NOT NULL,
+	[SpecialistID] [int] NOT NULL,
+	[DoctorID] [int] NOT NULL,
+	[RoleSpecialistID] [int] NOT NULL,
+ CONSTRAINT [PK_DetailSpecialist] PRIMARY KEY CLUSTERED 
+(
+	[DetailSpecialistID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Doctor]    Script Date: 7/30/2023 7:16:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Doctor](
+	[DoctorID] [int] IDENTITY(1,1) NOT NULL,
+	[Availability] [nvarchar](max) NOT NULL,
+	[EmployeeID] [int] NOT NULL,
+ CONSTRAINT [PK_Doctor] PRIMARY KEY CLUSTERED 
+(
+	[DoctorID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Employee]    Script Date: 7/30/2023 7:16:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Employee](
+	[EmployeeID] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](50) NOT NULL,
+	[Address] [nvarchar](max) NULL,
+	[Phone] [nvarchar](max) NULL,
+	[Gender] [nvarchar](max) NULL,
+	[JoiningDate] [nvarchar](max) NULL,
+	[AccountID] [int] NOT NULL,
+ CONSTRAINT [PK_Employee] PRIMARY KEY CLUSTERED 
+(
+	[EmployeeID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Invoice]    Script Date: 7/30/2023 7:16:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Invoice](
+	[InvoiceID] [int] IDENTITY(1,1) NOT NULL,
+	[InvoiceDate] [nvarchar](max) NOT NULL,
+	[PatientID] [int] NOT NULL,
+	[TreatmentID] [int] NOT NULL,
+ CONSTRAINT [PK_Invoice] PRIMARY KEY CLUSTERED 
+(
+	[InvoiceID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[MedicalReport]    Script Date: 7/30/2023 7:16:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[MedicalReport](
+	[ReportID] [int] IDENTITY(1,1) NOT NULL,
+	[ReportDate] [nvarchar](max) NOT NULL,
+	[PatientID] [int] NOT NULL,
+	[Diagnosis] [nvarchar](max) NOT NULL,
+	[TestResults] [nvarchar](max) NOT NULL,
+	[Recommendations] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_MedicalReport] PRIMARY KEY CLUSTERED 
+(
+	[ReportID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Medication]    Script Date: 7/30/2023 7:16:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Medication](
+	[MedicationID] [int] IDENTITY(1,1) NOT NULL,
+	[MedicationName] [nvarchar](50) NOT NULL,
+	[Dosage] [nvarchar](max) NOT NULL,
+	[Price] [decimal](18, 2) NOT NULL,
+ CONSTRAINT [PK_Medication] PRIMARY KEY CLUSTERED 
+(
+	[MedicationID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[News]    Script Date: 7/30/2023 7:16:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[News](
+	[NewsID] [int] IDENTITY(1,1) NOT NULL,
+	[NewsContext] [nvarchar](max) NOT NULL,
+	[NewImage] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_News] PRIMARY KEY CLUSTERED 
+(
+	[NewsID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Patient]    Script Date: 7/30/2023 7:16:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Patient](
+	[PatientID] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](max) NOT NULL,
+	[Address] [nvarchar](max) NOT NULL,
+	[ContactDetails] [nvarchar](max) NOT NULL,
+	[Dob] [nvarchar](max) NOT NULL,
+	[MedicalHistory] [nvarchar](max) NOT NULL,
+	[AccountID] [int] NOT NULL,
+ CONSTRAINT [PK_Patient] PRIMARY KEY CLUSTERED 
+(
+	[PatientID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Prescription]    Script Date: 7/30/2023 7:16:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Prescription](
+	[PrescriptionID] [int] IDENTITY(1,1) NOT NULL,
+	[PrescriptionDate] [nvarchar](max) NOT NULL,
+	[PatientID] [int] NOT NULL,
+	[MedicationID] [int] NOT NULL,
+ CONSTRAINT [PK_Prescription] PRIMARY KEY CLUSTERED 
+(
+	[PrescriptionID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ReportFromAi]    Script Date: 7/30/2023 7:16:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ReportFromAi](
+	[ReportAiID] [int] IDENTITY(1,1) NOT NULL,
+	[PatientID] [int] NOT NULL,
+	[DoctorID] [int] NOT NULL,
+	[DateCreate] [nvarchar](max) NOT NULL,
+	[ReportContent] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_ReportFromAi] PRIMARY KEY CLUSTERED 
+(
+	[ReportAiID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Role]    Script Date: 7/30/2023 7:16:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Role](
+	[RoleID] [int] IDENTITY(1,1) NOT NULL,
+	[RoleName] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_Role] PRIMARY KEY CLUSTERED 
+(
+	[RoleID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RoleSpecialist]    Script Date: 7/30/2023 7:16:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RoleSpecialist](
+	[RoleSpecialistID] [int] IDENTITY(1,1) NOT NULL,
+	[RoleSpecialistName] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_RoleSpecialist] PRIMARY KEY CLUSTERED 
+(
+	[RoleSpecialistID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RoomClinic]    Script Date: 7/30/2023 7:16:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RoomClinic](
+	[RoomClinicID] [int] IDENTITY(1,1) NOT NULL,
+	[RoomClinicName] [nvarchar](max) NOT NULL,
+	[DoctorID] [int] NOT NULL,
+	[SpecialistID] [int] NOT NULL,
+ CONSTRAINT [PK_RoomClinic] PRIMARY KEY CLUSTERED 
+(
+	[RoomClinicID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Specialist]    Script Date: 7/30/2023 7:16:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Specialist](
+	[SpecialistID] [int] IDENTITY(1,1) NOT NULL,
+	[SpecialistName] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_Specialist] PRIMARY KEY CLUSTERED 
+(
+	[SpecialistID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Treatment]    Script Date: 7/30/2023 7:16:26 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Treatment](
+	[TreatmentID] [int] IDENTITY(1,1) NOT NULL,
+	[TreatmentName] [nvarchar](max) NOT NULL,
+	[Description] [nvarchar](max) NOT NULL,
+	[Cost] [decimal](18, 2) NOT NULL,
+ CONSTRAINT [PK_Treatment] PRIMARY KEY CLUSTERED 
+(
+	[TreatmentID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+INSERT [dbo].[__EFMigrationsHistory] ([MigrationId], [ProductVersion]) VALUES (N'20230728054608_InitialCreate', N'7.0.2')
+GO
+SET IDENTITY_INSERT [dbo].[Account] ON 
+GO
+INSERT [dbo].[Account] ([AccountID], [Password], [Mail], [RoleID]) VALUES (1, N'123456', N'Trungtin@gmail.com', 1)
+GO
+INSERT [dbo].[Account] ([AccountID], [Password], [Mail], [RoleID]) VALUES (2, N'123456', N'Hoanghieu@gmail.com', 3)
+GO
+INSERT [dbo].[Account] ([AccountID], [Password], [Mail], [RoleID]) VALUES (3, N'123456', N'Hoangho@gmail.com', 3)
+GO
+INSERT [dbo].[Account] ([AccountID], [Password], [Mail], [RoleID]) VALUES (4, N'123456', N'Hoanghung@gmail.com', 3)
+GO
+INSERT [dbo].[Account] ([AccountID], [Password], [Mail], [RoleID]) VALUES (5, N'123456', N'Vinhkhang@gmail.com', 3)
+GO
+INSERT [dbo].[Account] ([AccountID], [Password], [Mail], [RoleID]) VALUES (6, N'123456', N'Minhkha@gmail.com', 3)
+GO
+INSERT [dbo].[Account] ([AccountID], [Password], [Mail], [RoleID]) VALUES (7, N'123456', N'Vankhanh@gmail.com', 4)
+GO
+INSERT [dbo].[Account] ([AccountID], [Password], [Mail], [RoleID]) VALUES (8, N'123456', N'Kennedy@gmail.com', 4)
+GO
+INSERT [dbo].[Account] ([AccountID], [Password], [Mail], [RoleID]) VALUES (9, N'123456', N'Johnson@gmail.com', 4)
+GO
+INSERT [dbo].[Account] ([AccountID], [Password], [Mail], [RoleID]) VALUES (10, N'123456', N'Alexander@gmail.com', 4)
+GO
+INSERT [dbo].[Account] ([AccountID], [Password], [Mail], [RoleID]) VALUES (11, N'An123', N'An@gmail.com', 2)
+GO
+INSERT [dbo].[Account] ([AccountID], [Password], [Mail], [RoleID]) VALUES (12, N'Mat123', N'Mat@gmail.com', 2)
+GO
+INSERT [dbo].[Account] ([AccountID], [Password], [Mail], [RoleID]) VALUES (13, N'Phuong123', N'Phuong@gmail.com', 2)
+GO
+INSERT [dbo].[Account] ([AccountID], [Password], [Mail], [RoleID]) VALUES (14, N'Uyen123', N'Uyen@gmail.com', 2)
+GO
+INSERT [dbo].[Account] ([AccountID], [Password], [Mail], [RoleID]) VALUES (15, N'Kiet123', N'Kiet@gmail.com', 2)
+GO
+SET IDENTITY_INSERT [dbo].[Account] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Appointment] ON 
+GO
+INSERT [dbo].[Appointment] ([AppointmentID], [AppointmentDate], [AppointmentTime], [PatientID], [DoctorID]) VALUES (1, N'26/6/2023', N'10:32', 1, 1)
+GO
+INSERT [dbo].[Appointment] ([AppointmentID], [AppointmentDate], [AppointmentTime], [PatientID], [DoctorID]) VALUES (2, N'20/7/2023', N'14:50', 2, 2)
+GO
+INSERT [dbo].[Appointment] ([AppointmentID], [AppointmentDate], [AppointmentTime], [PatientID], [DoctorID]) VALUES (3, N'10/7/2023', N'16:35', 3, 3)
+GO
+INSERT [dbo].[Appointment] ([AppointmentID], [AppointmentDate], [AppointmentTime], [PatientID], [DoctorID]) VALUES (4, N'15/6/2023', N'9:51', 4, 4)
+GO
+INSERT [dbo].[Appointment] ([AppointmentID], [AppointmentDate], [AppointmentTime], [PatientID], [DoctorID]) VALUES (5, N'28/7/2023', N'11:11', 5, 5)
+GO
+SET IDENTITY_INSERT [dbo].[Appointment] OFF
+GO
+SET IDENTITY_INSERT [dbo].[DermatologicalDisease] ON 
+GO
+INSERT [dbo].[DermatologicalDisease] ([DiseaseID], [DiseaseName], [Description], [Symptoms], [Causes], [Diagnosis], [Treatment], [Prevention]) VALUES (1, N'Psoriasis', N'Psoriasis is a chronic autoimmune skin condition that causes the rapid buildup of skin cells, leading to red, thick, and scaly patches on the skin''s surface', N'Red, inflamed skin with silver-white scales, itching, dry and cracked skin, thickened nails', N'Genetic predisposition, immune system dysfunction, triggers like stress, infections, or certain medications', N'Typically diagnosed by visual examination and medical history. Biopsy or skin scraping may be performed to confirm the diagnosis', N'Topical creams, light therapy, systemic medications, and biologic drugs to manage symptoms and control immune response.', N' Avoid triggers, maintain a healthy lifestyle, and follow prescribed treatment plans.')
+GO
+INSERT [dbo].[DermatologicalDisease] ([DiseaseID], [DiseaseName], [Description], [Symptoms], [Causes], [Diagnosis], [Treatment], [Prevention]) VALUES (2, N'Eczema (Atopic Dermatitis)', N'Eczema is a chronic inflammatory skin condition characterized by dry, itchy, and inflamed skin.', N'Red, itchy, and dry skin, rashes, swelling, rough patches, and possible oozing or crusting.', N'Genetic factors, environmental triggers like irritants, allergens, or climate changes.', N'NULLBased on clinical examination and medical history. Allergy tests may be conducted to identify triggers.', N'Moisturizers, topical steroids, antihistamines, and avoiding triggers. Severe cases may require immunosuppressive medications.', N'Keep the skin moisturized, avoid known triggers, and use mild soaps and detergents.')
+GO
+INSERT [dbo].[DermatologicalDisease] ([DiseaseID], [DiseaseName], [Description], [Symptoms], [Causes], [Diagnosis], [Treatment], [Prevention]) VALUES (3, N'Acne', N'Acne is a common skin condition characterized by the formation of pimples, blackheads, and whiteheads on the face, neck, chest, and back', N'Pimples, blackheads, whiteheads, oily skin, and occasional red and inflamed nodules.', N'Excess sebum production, clogged hair follicles, bacteria, hormonal changes, and genetics.', N'Typically diagnosed by visual examination and medical history.', N'Topical creams, antibiotics, oral contraceptives (for hormonal acne in females), and isotretinoin (for severe cases).', N'Maintain good hygiene, avoid squeezing or picking at pimples, and use non-comedogenic skincare products')
+GO
+INSERT [dbo].[DermatologicalDisease] ([DiseaseID], [DiseaseName], [Description], [Symptoms], [Causes], [Diagnosis], [Treatment], [Prevention]) VALUES (4, N'Rosacea', N'Rosacea is a chronic inflammatory skin condition that primarily affects the face, causing redness, visible blood vessels, and sometimes acne-like bumps.', N'Persistent facial redness, visible blood vessels, flushing, and occasionally, small red bumps.', N'Exact cause unknown, but factors like genetics, sun exposure, and abnormal facial blood vessels may contribute', N'Based on clinical examination and ruling out other conditions.', N'Topical creams, oral antibiotics, laser therapy, and lifestyle modifications to manage triggers.', N'Limit exposure to triggers like sunlight, stress, spicy foods, and alcohol.')
+GO
+INSERT [dbo].[DermatologicalDisease] ([DiseaseID], [DiseaseName], [Description], [Symptoms], [Causes], [Diagnosis], [Treatment], [Prevention]) VALUES (5, N'Vitiligo', N'Vitiligo is a skin disorder that causes the loss of skin color in patches due to the destruction of melanocytes, the cells responsible for producing pigment.', N'Smooth, depigmented white patches on the skin, often symmetrically distributed.', N'Autoimmune response, genetic factors, and environmental triggers.', N'Usually diagnosed through visual examination and a Wood''s lamp test to assess pigmentation.', N'Topical corticosteroids, topical calcineurin inhibitors, phototherapy, and skin grafting in severe cases', N'Avoiding trauma to the skin and potential triggers.')
+GO
+INSERT [dbo].[DermatologicalDisease] ([DiseaseID], [DiseaseName], [Description], [Symptoms], [Causes], [Diagnosis], [Treatment], [Prevention]) VALUES (6, N'Contact Dermatitis', N'Contact dermatitis is an inflammatory skin reaction that occurs when the skin comes into contact with irritants or allergens.', N' Red, itchy rash, swelling, and blisters in the affected area', N' Exposure to irritants like chemicals, soaps, or allergens like plants, metals, or cosmetics', N'Based on clinical examination and patch testing to identify specific allergens', N'Avoiding the irritant or allergen, topical corticosteroids, and antihistamines to alleviate symptoms', N'Identifying and avoiding triggers, using protective gear, and patch testing for suspected allergens.')
+GO
+INSERT [dbo].[DermatologicalDisease] ([DiseaseID], [DiseaseName], [Description], [Symptoms], [Causes], [Diagnosis], [Treatment], [Prevention]) VALUES (7, N'Urticaria (Hives)', N'Urticaria, commonly known as hives, is a skin condition characterized by itchy, raised, and red welts that appear suddenly on the skin.', N'Red, itchy welts or bumps that vary in size and shape.', N'Allergic reactions, medications, insect bites, stress, or underlying health conditions.', N'Based on clinical examination and medical history.', N'Antihistamines, corticosteroids, and identifying and avoiding triggers.', N'Minimize exposure to known allergens and avoid triggering factors.')
+GO
+INSERT [dbo].[DermatologicalDisease] ([DiseaseID], [DiseaseName], [Description], [Symptoms], [Causes], [Diagnosis], [Treatment], [Prevention]) VALUES (8, N'Tinea (Ringworm)', N'Tinea, commonly known as ringworm, is a fungal infection that affects the skin, scalp, or nails.', N'Red, scaly, and itchy patches on the skin with a ring-like appearance.', N'Fungal infection from contact with infected individuals or objects.', N'Visual examination and possibly a skin culture to identify the causative fungus.', N'Topical or oral antifungal medications.', N'Maintain good hygiene, avoid sharing personal items, and avoid contact with infected individuals.')
+GO
+INSERT [dbo].[DermatologicalDisease] ([DiseaseID], [DiseaseName], [Description], [Symptoms], [Causes], [Diagnosis], [Treatment], [Prevention]) VALUES (9, N'Impetigo', N'Impetigo is a contagious bacterial skin infection that primarily affects young children.', N'Red sores that quickly rupture and ooze, forming a yellowish-brown crust.', N'Bacterial infection, often caused by Staphylococcus aureus or Streptococcus pyogenes.', N'Based on visual examination and sometimes bacterial culture.', N'Topical or oral antibiotics.', N'Good hygiene practices, especially handwashing, and avoiding close contact with infected individuals.')
+GO
+INSERT [dbo].[DermatologicalDisease] ([DiseaseID], [DiseaseName], [Description], [Symptoms], [Causes], [Diagnosis], [Treatment], [Prevention]) VALUES (10, N'Scabies', N'Scabies is a contagious skin infestation caused by tiny mites that burrow into the skin, leading to intense itching and rash.', N'Intense itching, especially at night, and the development of small red bumps or blisters.', N'Infestation by the Sarcoptes scabiei mite.', N'Based on clinical examination and sometimes skin scraping to identify the mites.', N'Topical scabicidal creams, oral medications in severe cases.', N'Avoid close contact with infected individuals and their belongings.')
+GO
+SET IDENTITY_INSERT [dbo].[DermatologicalDisease] OFF
+GO
+SET IDENTITY_INSERT [dbo].[DetailDoctor] ON 
+GO
+INSERT [dbo].[DetailDoctor] ([DetailDoctorID], [Specialty], [Hospital], [YearsOfExperience], [DoctorID]) VALUES (1, N'Dermatology', N'Dermatology Clinic Can Tho', N'5', 1)
+GO
+INSERT [dbo].[DetailDoctor] ([DetailDoctorID], [Specialty], [Hospital], [YearsOfExperience], [DoctorID]) VALUES (2, N'Dermatology', N'Dermatology Clinic Can Tho', N'3', 2)
+GO
+INSERT [dbo].[DetailDoctor] ([DetailDoctorID], [Specialty], [Hospital], [YearsOfExperience], [DoctorID]) VALUES (3, N'Dermatology', N'Dermatology Clinic Can Tho', N'4', 3)
+GO
+INSERT [dbo].[DetailDoctor] ([DetailDoctorID], [Specialty], [Hospital], [YearsOfExperience], [DoctorID]) VALUES (4, N'Dermatology ', N'Dermatology Clinic Ho Chi Minh', N'8', 4)
+GO
+INSERT [dbo].[DetailDoctor] ([DetailDoctorID], [Specialty], [Hospital], [YearsOfExperience], [DoctorID]) VALUES (5, N'Dermatology', N'Dermatology Clinic Can Tho', N'10', 5)
+GO
+SET IDENTITY_INSERT [dbo].[DetailDoctor] OFF
+GO
+SET IDENTITY_INSERT [dbo].[DetailSpecialist] ON 
+GO
+INSERT [dbo].[DetailSpecialist] ([DetailSpecialistID], [SpecialistID], [DoctorID], [RoleSpecialistID]) VALUES (1, 1, 1, 1)
+GO
+INSERT [dbo].[DetailSpecialist] ([DetailSpecialistID], [SpecialistID], [DoctorID], [RoleSpecialistID]) VALUES (2, 2, 2, 2)
+GO
+INSERT [dbo].[DetailSpecialist] ([DetailSpecialistID], [SpecialistID], [DoctorID], [RoleSpecialistID]) VALUES (3, 4, 3, 2)
+GO
+INSERT [dbo].[DetailSpecialist] ([DetailSpecialistID], [SpecialistID], [DoctorID], [RoleSpecialistID]) VALUES (4, 8, 4, 4)
+GO
+INSERT [dbo].[DetailSpecialist] ([DetailSpecialistID], [SpecialistID], [DoctorID], [RoleSpecialistID]) VALUES (5, 10, 5, 3)
+GO
+SET IDENTITY_INSERT [dbo].[DetailSpecialist] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Doctor] ON 
+GO
+INSERT [dbo].[Doctor] ([DoctorID], [Availability], [EmployeeID]) VALUES (1, N'Offline', 11)
+GO
+INSERT [dbo].[Doctor] ([DoctorID], [Availability], [EmployeeID]) VALUES (2, N'Busy', 12)
+GO
+INSERT [dbo].[Doctor] ([DoctorID], [Availability], [EmployeeID]) VALUES (3, N'Busy', 13)
+GO
+INSERT [dbo].[Doctor] ([DoctorID], [Availability], [EmployeeID]) VALUES (4, N'Online', 14)
+GO
+INSERT [dbo].[Doctor] ([DoctorID], [Availability], [EmployeeID]) VALUES (5, N'Online', 15)
+GO
+SET IDENTITY_INSERT [dbo].[Doctor] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Employee] ON 
+GO
+INSERT [dbo].[Employee] ([EmployeeID], [Name], [Address], [Phone], [Gender], [JoiningDate], [AccountID]) VALUES (1, N'Trung Tin', N'Viet Nam', N'0899239411', N'Male', N'28/7/2023', 1)
+GO
+INSERT [dbo].[Employee] ([EmployeeID], [Name], [Address], [Phone], [Gender], [JoiningDate], [AccountID]) VALUES (2, N'Tran Hoang Ho', N'Viet Nam ', N'0923991234', N'Female', N'27/7/2023', 2)
+GO
+INSERT [dbo].[Employee] ([EmployeeID], [Name], [Address], [Phone], [Gender], [JoiningDate], [AccountID]) VALUES (3, N'Truong Hoang Hieu', N'Viet Nam', N'0964821233', N'Male', N'26/7/2023', 3)
+GO
+INSERT [dbo].[Employee] ([EmployeeID], [Name], [Address], [Phone], [Gender], [JoiningDate], [AccountID]) VALUES (4, N'Tran Hoang Hung', N'Viet Nam', N'0823991234', N'Male', N'25/7/2023', 4)
+GO
+INSERT [dbo].[Employee] ([EmployeeID], [Name], [Address], [Phone], [Gender], [JoiningDate], [AccountID]) VALUES (5, N'Luong Tong Vinh Khang', N'Viet Nam', N'0932557834', N'Male', N'24/7/2023', 5)
+GO
+INSERT [dbo].[Employee] ([EmployeeID], [Name], [Address], [Phone], [Gender], [JoiningDate], [AccountID]) VALUES (6, N'Tran Minh Kha ', N'Viet Nam', N'0826771231', N'Male', N'23/7/2023', 6)
+GO
+INSERT [dbo].[Employee] ([EmployeeID], [Name], [Address], [Phone], [Gender], [JoiningDate], [AccountID]) VALUES (7, N'Hoang Van Khanh', N'Viet Nam', N'0923818231', N'Female', N'22/7/2023', 7)
+GO
+INSERT [dbo].[Employee] ([EmployeeID], [Name], [Address], [Phone], [Gender], [JoiningDate], [AccountID]) VALUES (8, N'Kennedy Smith', N'United State', N'0954623423', N'Male', N'21/7/2023', 8)
+GO
+INSERT [dbo].[Employee] ([EmployeeID], [Name], [Address], [Phone], [Gender], [JoiningDate], [AccountID]) VALUES (9, N'Johnson Mike', N'United State', N'0923841571', N'Male', N'20/7/2023', 9)
+GO
+INSERT [dbo].[Employee] ([EmployeeID], [Name], [Address], [Phone], [Gender], [JoiningDate], [AccountID]) VALUES (10, N'Alexander Queen', N'United State', N'0862183781', N'Female', N'19/7/2023', 10)
+GO
+INSERT [dbo].[Employee] ([EmployeeID], [Name], [Address], [Phone], [Gender], [JoiningDate], [AccountID]) VALUES (11, N'Tran Ngoc An', N'Viet Nam', N'0923912581', N'Female', N'18/7/2023', 11)
+GO
+INSERT [dbo].[Employee] ([EmployeeID], [Name], [Address], [Phone], [Gender], [JoiningDate], [AccountID]) VALUES (12, N'Thien Tran Mat', N'Viet Nam', N'0988123848', N'Female', N'17/7/2023', 12)
+GO
+INSERT [dbo].[Employee] ([EmployeeID], [Name], [Address], [Phone], [Gender], [JoiningDate], [AccountID]) VALUES (13, N'Nguyen Hoang Phuong ', N'Viet Nam', N'0928471823', N'Female', N'16/7/2023', 13)
+GO
+INSERT [dbo].[Employee] ([EmployeeID], [Name], [Address], [Phone], [Gender], [JoiningDate], [AccountID]) VALUES (14, N'Nguyen Ngoc Phuong Uyen', N'Viet Nam', N'0923418881', N'Female', N'15/7/2023', 14)
+GO
+INSERT [dbo].[Employee] ([EmployeeID], [Name], [Address], [Phone], [Gender], [JoiningDate], [AccountID]) VALUES (15, N'Truong That Kiet', N'Viet Nam', N'0908377183', N'Male', N'14/7/2023', 15)
+GO
+SET IDENTITY_INSERT [dbo].[Employee] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Invoice] ON 
+GO
+INSERT [dbo].[Invoice] ([InvoiceID], [InvoiceDate], [PatientID], [TreatmentID]) VALUES (1, N'28/07/2023', 1, 1)
+GO
+INSERT [dbo].[Invoice] ([InvoiceID], [InvoiceDate], [PatientID], [TreatmentID]) VALUES (2, N'27/07/2023', 2, 2)
+GO
+INSERT [dbo].[Invoice] ([InvoiceID], [InvoiceDate], [PatientID], [TreatmentID]) VALUES (3, N'26/07/2023', 3, 3)
+GO
+INSERT [dbo].[Invoice] ([InvoiceID], [InvoiceDate], [PatientID], [TreatmentID]) VALUES (4, N'25/07/2023', 4, 4)
+GO
+INSERT [dbo].[Invoice] ([InvoiceID], [InvoiceDate], [PatientID], [TreatmentID]) VALUES (5, N'24/01/2023', 5, 5)
+GO
+SET IDENTITY_INSERT [dbo].[Invoice] OFF
+GO
+SET IDENTITY_INSERT [dbo].[MedicalReport] ON 
+GO
+INSERT [dbo].[MedicalReport] ([ReportID], [ReportDate], [PatientID], [Diagnosis], [TestResults], [Recommendations]) VALUES (1, N'28/06/2023', 1, N'Acne', N'Moderate', N'Salicylic acid')
+GO
+INSERT [dbo].[MedicalReport] ([ReportID], [ReportDate], [PatientID], [Diagnosis], [TestResults], [Recommendations]) VALUES (2, N'27/06/2023', 2, N'Acne', N'Severe', N'Antibiotics')
+GO
+INSERT [dbo].[MedicalReport] ([ReportID], [ReportDate], [PatientID], [Diagnosis], [TestResults], [Recommendations]) VALUES (3, N'26/06/2023', 3, N'Acne ', N'Almost Clear', N'Retinoids ')
+GO
+INSERT [dbo].[MedicalReport] ([ReportID], [ReportDate], [PatientID], [Diagnosis], [TestResults], [Recommendations]) VALUES (4, N'25/06/2023', 4, N'Acne', N'Moderate', N'Antibiotics')
+GO
+INSERT [dbo].[MedicalReport] ([ReportID], [ReportDate], [PatientID], [Diagnosis], [TestResults], [Recommendations]) VALUES (5, N'24/05/2023', 5, N'Acne', N'Severe', N'Chemical peel')
+GO
+SET IDENTITY_INSERT [dbo].[MedicalReport] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Medication] ON 
+GO
+INSERT [dbo].[Medication] ([MedicationID], [MedicationName], [Dosage], [Price]) VALUES (1, N'The Ordinary Granactive Retinoid 2% Emulsion', N'Acne', CAST(14.00 AS Decimal(18, 2)))
+GO
+INSERT [dbo].[Medication] ([MedicationID], [MedicationName], [Dosage], [Price]) VALUES (2, N'La Roche-Posay Effaclar Adapalene Gel 0.1%', N'Acne', CAST(15.00 AS Decimal(18, 2)))
+GO
+INSERT [dbo].[Medication] ([MedicationID], [MedicationName], [Dosage], [Price]) VALUES (3, N'La Roche-Posay Effaclar Serum ', N'Acne', CAST(18.00 AS Decimal(18, 2)))
+GO
+INSERT [dbo].[Medication] ([MedicationID], [MedicationName], [Dosage], [Price]) VALUES (4, N'La Roche-Posay Retinol B3 Serum', N'Acne', CAST(50.00 AS Decimal(18, 2)))
+GO
+INSERT [dbo].[Medication] ([MedicationID], [MedicationName], [Dosage], [Price]) VALUES (5, N'Obagi Retinol 0.5%', N'Acne', CAST(70.00 AS Decimal(18, 2)))
+GO
+INSERT [dbo].[Medication] ([MedicationID], [MedicationName], [Dosage], [Price]) VALUES (6, N'Diff Cream', N'Acne', CAST(10.00 AS Decimal(18, 2)))
+GO
+INSERT [dbo].[Medication] ([MedicationID], [MedicationName], [Dosage], [Price]) VALUES (8, N'Serum Paula''s Choice Clinical Discoloration Repair', N'Acne', CAST(80.00 AS Decimal(18, 2)))
+GO
+INSERT [dbo].[Medication] ([MedicationID], [MedicationName], [Dosage], [Price]) VALUES (9, N' Eucerin Pro ACNE Solution A.I Clearing Treatment', N'Acne', CAST(20.00 AS Decimal(18, 2)))
+GO
+INSERT [dbo].[Medication] ([MedicationID], [MedicationName], [Dosage], [Price]) VALUES (10, N'Neogen Dermalogy A-Clear AID Soothing Pink Eraser', N'Acne', CAST(12.00 AS Decimal(18, 2)))
+GO
+SET IDENTITY_INSERT [dbo].[Medication] OFF
+GO
+SET IDENTITY_INSERT [dbo].[News] ON 
+GO
+INSERT [dbo].[News] ([NewsID], [NewsContext], [NewImage]) VALUES (1, N'In a major development for individuals struggling with acne, a novel acne treatment has received FDA approval. The new therapy, based on cutting-edge research, offers a more targeted approach to combat stubborn acne and reduce its severity. Dermatologists are optimistic that this treatment will significantly improve the quality of life for acne sufferers and revolutionize acne management.', N'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAoHCBYWFRgWFhUYGBgYGBgYGBoYGhgYGBgaGhgZGhgaGhodIS4lHCErIRgYJjgmKy8xNTU1GiQ7QDs0Py40NTEBDAwMEA8QHxISHzQrISw0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0MTQ0NDQ0NDQ0NDQ0NDE0NDQ0NDQ0NDQ0NP/AABEIAOEA4QMBIgACEQEDEQH/xAAcAAABBQEBAQAAAAAAAAAAAAACAAEDBAUGBwj/xABDEAACAQIEAwUECAQDBwUAAAABAgADEQQSITEFQVEGEyJhcRQygZFSkqGxwdHh8AcVFkJygpMzU1Ri0uLxFyNDc7L/xAAZAQADAQEBAAAAAAAAAAAAAAAAAQIDBAX/xAAkEQACAgEEAgMBAQEAAAAAAAAAAQIRIQMSMVETQQQUYTIjIv/aAAwDAQACEQMRAD8A9VvHvIe9EXeiRZtRLHEiFQQhUHWAiQCKB3g6xd4OsBBxQe8HWIOOsoA4jA7wdY+cdYAFEYOcdYi46wAKZWMxz+0Lh1Kpmo1Kpd/EfCyqoVLi9ibtrsR1uNF300Iv53PL/wAShj+HU64C10pVFViQHp5rXsDYk6G1wet4CMTAdpMQ+JoUWpIiE1EqOLstR1pmojUGv7hTI1zf37crnrZQ9kF0OWlekCKdkICXVl8IDaDLlHwPUWtox5keVgR+J8oAgzBiLjrGzDrJooeIRswizCFDDig5h1izCAgooOYdY+YdYAPHjZhHzCUIUUWYRswgIeKLMI0BnO+1+cf2vznNHH+eg38zGXGm1yfSSLcjphi/OEMX5zmPbTtf1mBxztG6uERypXVrBTcnYajpr53G1tQadno/tcf2ueWp2krc3OnktyfW2kuYXjNZjcuba6WX8tv35yd1F7Wz0cYvzj+1+c4heJv9M/IflE3FH+mfkIvIg8b7O39ri9r85wx4pU+mfkPykT8Vq8nPyH5ReVD8T7O/GLiOLnhfEu1OOp1GT2hrA6eFNjt/bKn9Z47/AIlvq0/+marJk3R7/wC2ecXtc8A/rPHf8S31af8A0y5hO1uLILNiG0NrZUA2/wAOu/WFCTPcva4/tnnPEG7YYkf/ADsfgg/CN/V2Lv8A7dx5Zadz800iHZ7f7XH9r854kO1OL/4hvqpb/wDMmo9pMWdTiGsDsFS/p7v76wCz2f2vzi9r8548/afEAf7Zr+ia9P7dJWftbitu9f5J+KwCz2r2uIYvznif9U4w/wDzkf5U/FYw7UYw2UYhr33Cp/0wCz272uL2ueT4fjuJd0QVm8Iu5yprfl7vmOnLrOkHEXt75v10/KS5pGig2dr7XH9rnmbcbrgkGodNDov5Rfz2t/vD8l/KaGdnpntcXtc8zHHa/wDvD8l/KL+eVv8AeH5L+UBbj0z2vzinmf8APa3+8PyX8ooD3EPtXK/rJPa/kJzy4qP7X8oqJNjG8TyIzc+Q6k7CcgtViSxOpJJJ3JOp9OcbieOztlvov2t+m3zkNM/CDGjQosNzNXD1fsmDTe+vLlLaV5m0axZvLipIcTMIYmGMV5xbStxsGvBav5zKbFgCU6uKPWLYG8HtPSDWqDcaN6Hb7fvnOXmvXxBdWU8wfs1BmNNo4VGEnbsK8nw50Pr+EqyxQOh9Y2JFpGtsLef6w1WQo8IP5wKLKkDfX0/P8onrE6bfH8pWDwgR+/3rARMpJ5/LeTqRtb9+fSVO8ttpI3rX/ekALb1OUPDb6b8pSpnprNXBIALneTIceTb4cgQeZ1J/f73l/wBp85hDEwxifOZONm6lRbxz2N+v3iVhWkWJrXU/OURWmseDCfJqd/F38zO+j99KJNLvopm99FACl7VBq4sgHrK8r1GufSABI8lFSQKIYgMsLWhe0SvHiodlj2mI4qV4DQoVlhsTBbESsY0KCydX3lCXFErVFsY0JgSWm1hIoaxiJc8QIgGK8QyTNHzyKEBAAriOH6QVWSqloAS0SBqZZ9plOPaKh2XPao3tHnKoETGKgssLW31kXfyO8iIjQMs9/H7+VYo6JLXfxSrFADquJdiMXQUGoKYuQBZ7kk3P0egJ+Ep0eyGJa1gmpsPH+k9M49XFWqb6pTuBbmxPit11AH+WUa+KFJS4FyFAQDm7lUFvst529ZjLUd0jpjoqrZ5+eyuIzFbISLXs/UX6dLfMSxR7F4pthT+L2/Cdfg0K7m7sbt5s3vEc7An7pr021G22w2HMTOWs0aR0Ivk4Adg8Z0pfX/7Yf9AY3pS/1P0nptNhbz9JLnvzOknzyL+tH9PLx/DzHfRp/X/7YD/w9xo3Wn9f/tnr9Otp+ckNRT0v9sfnYvrx/Txg/wAP8Zb3af1/0kD9hcWutk+v+k9nquB8plYlyQRtDzyH9aP6eY0exOLYAhaev/P+klrfw9xpF8tP4Pf8J6VhXstprYVSUt1h55B9aNez5uq0WVirCzKSCDuCDYgyWhhmYEjkbfdO+/iZwDKRiEW1/DVtyOyt+B+E5HhNFmBt9K3XkNhzM6VNONnHLTcZbSovDnPT0vr8uUujs7Xy5iFA82t+E7zs12QNQCpUNlGy8z69Pv8ASbfFOz2ceD+0aBvc0Gv4azN66ukax+O6tnktLgdZjZQpP+L9JpYfsTi32VPi1vwneYHhuVgO6sQdyVt6i6zqMLgSNX0A5DX7TvIes/Ra0F7PJ07AY3ktP6/6ST/0+xvSl/qfpPXRTttJVpzP7EjX60K9njw/h7jelL/U/SF/6dY4C9qVv/s/SevlddI1Wnca6+sa+RIT+PE8absJjOQpH0qX/CU63ZLGLvSB5aMDPY6lMwEoE6k6eZv8Y1rsT+NE8ko9isW2yoP8TWPytLA/h/jSNBS/1P0nrFOiL/OTsbECHnkP60TxL+kMT0T6/wCkX9IYnon1/wBJ6vxbCgHOvM+L16zOnRGe5WcU4OEqZ51/R+J6J9f9Ip6NFHZJFh8ERbNe/O9/j8fOZfEmvWAX3UGw+mwNvktj/nBm5xPGIiFiL2sFA3Zjso6k/rOdWi4F2N3Y3PTMTdj9/oFUcpwxfs9RpcFnD1iGv0+0g6n5/dNHBPyvtpM6lQsB5/l1lqiuU+sJZHFGslWH3vnKQfSEGkll5MRzhNiJnvU/87wRWBFxHQy+1eVqr3IEBHvLFNYUHISJoP3zmnRpte+1tpmYmoFW/QfjHr8eSmurDrpqb+QjA0OJorqUZQyspVgdmB3uJxnZzhVLD08UGszrWZKdxc5Wp0yCfRW+frJ8V2qXKzNdVXm27eg/CUOy+KOIp16rC2audOgFNAPjZRLqSi+jK4SmkuT0LgBU0Qf7fS1+skrVwbgba3PodfWZiYxTkRDZLfC9tPheXqdA9PP8RMS2s2Ehy8h53AOvqR6SYm+o+NoNdNAfP849MEafL7vw+2OyaRKFhKkdFkii0SQNkbKBEF6x6gvATcRh6JThbj1lWrQAmtQayytjad9f31lOKoiM3upmapAIlapXUHe5Msumsy+H4csxvoLm5OgAvEjejQWmHHLbac/i6ORyvy9OU6jB1aLEqlRWy75SCBbznOcWxIeoSuw0B625zfSuzj+TtaXZWigXinQcJSp4F0t3puV9wk3sDvYcvXc9ZY7m59B9+80sVQuCz6ty6CVV205zguz2NtDCmNRGdBaIvY7w3EB1QObzjK0ZtBrr+EemPKABCCUPLSFtHYHlABkbWXKbSulM7m0kV/03jAbG0w4yAnxbmZeP4CxpsVbxhWykjnbT9+c2sMniuen7+6WiRaCdCdNOzwTEV2c3dmY/8x266cp6d/CzE0kwtXvCL98bKeYNNNfw+M4LtXge5xVVeRYuvo/it8CSPhO6/hng1qYOsGXMRXNuvuJ9k69VrZaODQX+tP8AS6+KCvnX3BbKOW/3c51fCeOU6xygFXtextqNToecFODUW8OXW2otb7ZJT4VTpnMg90i1xrfoPKcR6Dp4NOot1/fW8iYeXnJKb3HoSPiDb8oSrCiOAgIjpEdoxOkAInaxhotz5c4DGT01jQN4Jc3Tpv8AZ+EZmuP3frBcwQY7ISK9dbcvjMrTKUK76Hob7zVxjaSn3XlEap4OcqYpgCigItyCqi3zO5kAMucco5XvyYfaND+Ez1M7YVtVHl6m7e7ZLeKDeNLMyrjuKuwyrpfcmW6VQlB6SlVw8koPYWnA+MHrbn7LVjveEKlgb/nAV+UIOOkRSkElS/p6SXLeRadN+kNG6QKDCEyJKLBiSd9LSyqE7nb96yW33wAa1o1Jg2t9OUK0lRBbygSRVKgT7ZXq8V/tQZm1u3Jf1g1MP3rai6jYcvlzkPFMTTw1FqjL7osB1Y6ADprKSvBHGXweU8dd2xFQ1PezEHmABtY9LW+c73+F3EhTo1EYDK1XTrfIoPkdhp5zznG4pqjtUY3Z2LH48h5Db4TrexFWyMORc30191b+s69SP/FHDpS/0s9kohSLqw2H3ydaYIAP7tcTB4cylVsRyG2u36ec0VJGxO55mcLwehllmgtmfpcWPUhQCfs+yTXsfX8P2ZDSeS3ufQfft9xislhKd4nW4hINI7QQryVQsnVSI1pMBKQ5MjymM1gR1O1/KTSNheMmyrXF41Rgq3PoOp9BI+IOR4VIDGwudQPORDhLlQWqKb2vuTY/HzgkU2sWc9xnFZmC8hr/AODzmYJo8ZKB8ia5bhm6noPSZ869NVFHBrO5uh7xRrx5oYklriQMljLVFYNWnPOs9aio1SOtXzgVUMrPfkZVWRZpK/n8pbouLTEp12/OXKFblBxLUjXR76SSZ6PfnLS1bCIqyZX8vhzhF/CTtKqVt49SoTYL84FF6kbAC3rMHtXwg4jD1OqjMn+JAfvBYToUOmu0Di2MVKDsbZURm9QFJlRbTtETScWnweBTreyFQCm99s+vlcAX/fK85ITreyNBnpta2XvNd/ojnO2f8nmaf9HpXA6ikW5jfpfffzm+tP4zkuz+DqI4totgOoHlrt852qrpt06TgnyejF4IlHOSppqeesYL6wgJmU2HppHYytVJBHrzkoeFk0SQlkYfSGrS0xNBsecjAvDcyOx3lWJcFSut3J6dP36RsY5VGy72IHmbaScp85FiaRNh8/OBfODgm3135+sV5c45Ty1TbmA3xI1+6UQZ2xdqzzJqpNB3jwLxRkGpRp6SOvTub9JcpjSDUS88yz1zLcStUSaNSnaVnEtMloz3SCjWk1RYC0jLJJErydMVKxoGElK5t++l5SjZLntyWHxAJHlIzxemjWZ0U9GZQflea1DhyLqfEdtdtR0nlPabhBw1dl3RrsjdVJ29Rsf1m0dFPkwl8h+j0PEdpaCKc1VDpsGDH5LqZxnaftU1de6pgrT0uTozW2FuQ++cxFLjoxi7Inrykq9DTpeyvG2w4IAVlLXIYX5AfhObm1wPC50bxAHPYBtm8N9CdL6WtvqJco2qMoy2u0eocE7R0nsCCh+a/nOvwddWUWYN8Z4rkei9shUqBfcg/Am+1tb/AJTquD9ok2e6kcwCw+Q8Q+VvOcupov0dkNaLw8Ho6m4h2mBgsSHAZHzKeYNxNNSfpGczVG9XwWaiSu8ZnYc7yvUxHWSUlRZSpJA/nM5KvnJO8vKHRp5hADWmeG66zL4xx+nQKqxu7MFsP7b83P8AaLct5UU26REtsVbZ0q1IquJRVJJFhuTynF1+NV0JQ5QR5fK1zM2ti3fRnJHTYfIaTojpS9nPLXj6Tsl4hiu8qM/InQdANBIBGEMLOhKlRxttu2NaKFljwA7xeDUhsG+tHPB6fRvnLxMEPOfbHo7dz7M88CpHk31jI37OUOjfWmurR49kehbpdmE3Zuh0f6xjDs5Q6N9YzmeN8ZxIrYzJVxAWhkKLTo06lNQUDHvWKEqtxe55ZukfGcYxDV0QVq2VsLSqH2Sita9RveYBlJCHr6SvET5kdP8A05Q6P9YwaXZnDqbgPc9XM57iXE6yV6NP2jEojYVajFaCPWLl2F3p5CVNrAiwAIlzD4rEYit7PTxL01p0UqPUamgr1TU1F0ZbIACLgAai3PQUGsoTmpYaOi/libeL5ylxTslhcSoWqjEKcy2cqQbWOo5eU5jGdocQtMI+ICNTxww1WuipZ6eVizlSpVWFrkAcosT2gxC4bFvTxJqpSbDijiTTRCxd17xPdytYEC9ufmJajLshyj0aR/hlw/6FT/UeMf4ZYD6FT/UaafZiq7s+epi3AVbDFYdaAuSdUIUZjpr0uJ0MTteyoqLV0clT/hfw4/2VP9Vpcwn8P8FSBVVfKTqrOWUnTk3PwjabaYzUZMrBlYjUjxDbW219DzXS4ttIiNZb3YAB1vfPdWJAbzsVHqpmiTrJm0rwZNDsVhU0AfL9FnLLy2BGmw2kL9gcCd0fe/8AtGmy9Z0zFrHwC5uVRWAFtNbAnOSd7ZBqbSzSrBjYG5ABbQi1xpcH3T5HWDTQkkYFDsPhU9w1l9Kzg/MG83KfD1UWux82Nz8SBrLMWa2pOnO+wEhxjLlFpuPDK/sSdD84x4ZTO4PznG8B7VVKmMRnqqcPimrJQpjJmpGmQKbPYZhnAbQ31ItK/C+MV6uIqo+LxSZcZUpItPDJUpZA4CB6ndnJvY3OgAPnH4Y9IXll2zuP5PS6H5x/5VT6H5zl+Gpizj6mHbH1WSilGob06AzhzdkayaCwtca6zP7J8VxOIakXxGNN6hBy4WmcMVVz4WrBPCCBYm9wTDxR6QeaXbO2fhFMgjxC+lw1iPQ8phr/AA+wQzeGqczZmLVWJLdbnW85f+p8QBUZMaz4lcS6U8J3dNhUTvAoF1TMNCdb/wBvUz1SNRUeES5OXJi1+zGHfLmDnKoQHObkLtfqfORjsjhvov8AXM3ohAVGEOyWG+i/1zHHZXDfRf65m5FAKMT+lsN9F/rmKbcUAoyqh1jqJJUp21gATnaydaeMBCHaABJVlolmDjeymHqPUdjVBq27wJVdEey5QGVSARbr1MjxHZagzK694hVFpL3VR6dqae6vhOvxnSGRZY232Sox6MnC8GppUSoC7OlM0gzuzkoXL+In3jc7mLifAKNd1dw6uoyipTdqb5d8pZTqN9+p6zVtJFESuymlXBjJ2awypSRUKrRqrWSzG5qL/c5Or/Hy6QcT2Zw7rWQq+TEOr1FDEKXUg5lH9pJAvbebhEQEq2Z0ujL4bwZKDFles5Iy2qVXqKNQbgOSAdN5dxL2X3sp5aXuRrb4+ogcTxYo0nqEXyjwr9JibIo9SQJDw3iyOiF/A7u9MoTe1RL50vbfS/pLUZNbqwJyintLGCpaXIOpv4sp18iCx+ZPlL0zsTxJVYIrIXFSkjhywyipewBCm7EDQfdJfaHe5RFyglczsRnKmzZQFNhcEXPTaDT5Yty4LTC/7285RRijWLMq3vrlNztlAViFHookiYvV84CZAl7m+ri9r89dNN5KuLQqWzCwNjvodNCNwdRp5wToHknkGNwq1UemxbK6sjZTlbKwsbEbaGMMbTtmzra5FybWIUsQb7aAnWHTrK1rG9xcaHb9mIZlP2UwhREFFEyFGR0ASoGS2UlwMzHS5ve/OX+F8Lp0O87sEd7Ves92LXqPbMRfYaDSWogY7J2ogo8NRK74hQc9RERzfTKnu2HKZWB7IUKRUo+JUI4cIMRUCXDZtUBykE7i2s3w0e8diaMRuzGH7vu8rgd+cSrByHSqTfMrbj085tgxiw6xBx1ELHQYMUEQrxCFFFFKAUUUUBFVzIiJLVEiMxZvEcCKIRRIbDBjERQhGIjhqIVo4EdCbBaAJKVjWhQJmNxfCVa9SkiEoiXqmplVwaimyKFJ1tdm1Ftpm4ng1dWqAMahfLiEfKiZcRSIsMoNhnUWvOjxC1LkoRawsrAWJ1v5/R584J74ge6pBa4GoIHujW+59D6TojqOKSVGMoRbd2Yo4bVNOm5T/wB18ZTxFUXHgUMdL32VAo+c2KDvTBQo7gFijJlN1JJANyLEXt00jF6+tkXW+UG3h2y5rNrzvby+Egetb3UvnI8u75H3t/3YxSbfNAoqPFlWvh3Zi4VhZqb2UoWNkZWC5rqSC3Pppyj92+rr3viZA5buw5RQ/uBQLasN9bXtyk9qwy6gnImb3Qpe/jzcwLWtl8/KPQesSudEA/uI1OzXt4uuUfPflG39RRUXCs1QMUbLnRvGQT4Uqi5/zFPPb4bEzkOI10U6aXyglsx5LstvMnQecvUs1hmtfnbb4dIpKgQcUaPJKHBidooDwGkVakZBrHcRhMvZt6LitJQZRV7SyKl9ppGRjKITPaRvUb0hRiI3YKiPvG+l9keFaKIeA3WRNTlm0VpbiQpUVgI9oTJBMii7FaEBEBHjJbFK4xi52TxFkUOwCMRY7WNrEmxsBqcp6GWJAMIved5qWylBtYKSpYDTmUXe9raWubsCunF6Zy+/4tiadQADMFufD4RmNrnTfoYjxalk7wlgl1GYo4vmNgRpcjmTsACTYAmO/CaRKErc07ZCdStnDgj/ADAfCQpwOkFCkFlFyFJAFypQk5QCxysw1J0YwwGSV+K01YqxZSHVCSjhczkBBmtY3vvtzhJxSmzBFLMczJ4UcgFGCNc2sACRrtGbhqFcrXYHKDmN82VCgv1uCbxqfCKasjqCpT3bZSAPBp4gSPcXax84YE7ATjdFlV1ZmVghBWm7HxuUS4C3BzKVsdjvLeFxiVM2QscjFWJR1XMrFWUMRYkFSCBtaV8PwainuqRdaCnxHXuCDTJG2bQAnmAL7SzQwKI71Bcu9gSTfQEkD0BY2ve2w00jpCtiOLSxbNoHCEgE+IuEtoNgxsTsLG+xlf8AnFKwIZjmZ1GVHJJRijaAX3BseYFxcaw04XTUOqrYVBZ7E7WI0+ifEdpC/BKRBFiL5OYP+zQomjAjYnlvrEPJL/NKdyCWGVkViUcKGcoFGYi17unpc32MejxKm7hFLFiofRHsEYuFYtayg5GsTvYdReFuC0iWLAsHKFwQlmKFCL+G5H/trdb230hpwtA1NvEe7vkBa4W4ZbDnYKxFr2sBe5AMMBkJ+JUwXFyTTZEYBHY5n93KAPENxcXAKsNwbM3FqQBJfak1Y+F7imt8xItcHQ+HfQ6aSP8AktHmpNzdrsSHOfvLsDofHmP+ZusVbglFg3hIuCvhYqAppmllVR4QMhItbnfeGAyH/NaeZV8eZnyW7upcPlz5W8Ph8Pi15ayy7SunD0S2VbZXaooGgDMhRtOlmOnn6CTESZMuK7I2g3hsIJEzZqghJ0ErpvLCSkTIO8YtHgmUQK8UaKAFmKKKaGQDSFoopBoiTlGiigIeKKKAAmKKKAChCKKA2PDiilIljGDFFEA8ExRRDGiMUUABMjMaKSy0MYMUUllodJMIopURSCjGKKMgUUUUAP/Z')
+GO
+INSERT [dbo].[News] ([NewsID], [NewsContext], [NewImage]) VALUES (2, N'In a refreshing display of vulnerability, celebrities from various industries are speaking out about their battles with acne. By sharing their personal experiences, they aim to empower others, especially young individuals, to embrace their imperfections and prioritize self-acceptance over unrealistic beauty standards.', N'https://hellogiggles.com/wp-content/uploads/sites/7/2016/08/08/acne-0.jpg')
+GO
+INSERT [dbo].[News] ([NewsID], [NewsContext], [NewImage]) VALUES (3, N'A group of dermatologists has embarked on a comprehensive study to investigate the connection between diet and acne. Preliminary findings suggest that certain dietary patterns may influence acne development and exacerbation. The research aims to provide evidence-based dietary recommendations to complement conventional acne treatments.', N'data:image/jpeg;base64,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:image/jpeg;base64,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')
+GO
+INSERT [dbo].[News] ([NewsID], [NewsContext], [NewImage]) VALUES (4, N'As National Acne Awareness Month begins, organizations and healthcare professionals are launching educational campaigns to raise awareness about acne''s impact on mental health and self-esteem. These initiatives aim to dispel myths, reduce stigma, and encourage early intervention to promote better acne management and emotional well-being.', N'https://schaeferadvertising.com/wp-content/uploads/2020/09/EpiduoForte_UnbrandedAcneAwarenessMonthAssets_WEBSITE_Slide1.jpg')
+GO
+INSERT [dbo].[News] ([NewsID], [NewsContext], [NewImage]) VALUES (5, N'Amid the pandemic, virtual acne support groups have gained popularity as a safe space for individuals to share their acne journeys and seek advice from peers and experts. These online communities provide emotional support, debunk skincare myths, and foster a sense of camaraderie among those facing similar challenges.', N'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAoHCBYWFRgWFhYYGBgaHBocGhoaGhgaGBgaHBgaGhoaGBgcIS4lHB4rIRgYJjgmKy8xNTU1GiQ7QDs0Py40NTEBDAwMEA8QHhISHjQkISE0NDQ0NDQ0NDE0NDE0NDQ0NDQ0NDQ0MTQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NP/AABEIAOEA4QMBIgACEQEDEQH/xAAcAAABBQEBAQAAAAAAAAAAAAAFAAIDBAYBBwj/xABJEAABAgQCBAkGCwcEAwEAAAABAAIDBBEhBTEGEkFRImFxgZGhsbLRBzJzk8HwExQWIyRCU1RykuElMzQ1UmOCQ4Oi8RdiZBX/xAAZAQADAQEBAAAAAAAAAAAAAAAAAQIDBAX/xAAlEQEBAAICAQQBBQEAAAAAAAAAAQIRAzEhBBJBUYEiMjNhcSP/2gAMAwEAAhEDEQA/ALunmms5LTr4MF7QwNYQDDa4guYCTUi4qgEHyhYm5tRFZbP5tnTkp/KNAriUQu83VhkcrWCo99yy0GE+I/Uhttkenb0oPTUt8oM/tjMPJDZ4KZmnOIm5iNA9GzwUeG6PNYAXcIjo/VWpnDRsaouX0qYojp/PfaN9WzwU0DTmeIqYjT/gzwQo4U4mwTnYa8Wv78SJkLitRdP58H94wf7bPBVY3lHxAZRWerZ4KnMyGqCcuW6BRZUuNBeppxJylYNu8qGJXpFZ6pngo/8Aylin2sP1UNZ2NAoDymlNqghS9Q6yomzh+UzEXNqIrKin+my/UpD5TJ+gPwjOP5tnNsWKhGjSOS6kht1mmm3tCVD1bAtMZyJKz0V72l0KGx0M6jRQuc4GoAvYDNZmP5ScRAtFZ6tngloWSZDE/RQ+9EWOm32LduXOptuzxjSwfKhijjQRYfqmeCOyOnGJP86Iz1bPBZDBMLpwnC/YtTKQQFGWX02x453Wkg6VTdLvaT+FvgrTNJZna8fkb4IJBYrbGKPdl9r9mP0J/wD780cnj8jfBVY2kU79WI38jfBca1StYNyqZX7TcIFxtK8QGURnOxvZqqhE05xFub28vwTfBaJ8qx2YuguI4cBkB78iJlU3GfSl8v58XMVp/wBtg9iGzHlQxAV1YjLf22eChnpI/VWbnJUitbc+auZIsjQnyqYlsisr6JnguHyp4n9tD9UzwWKoB7E2m0q06bweVDEqfvWV9EzwRTRnyiT8aagQnxGFj4sNrgIbAS1zgHCuw3zXmjD2Ht/VH9Crz8r6eH32oFj6dSXEk0vFfKLBdExF7GC+qzmBYKlX8FwpsJgAF9p3o3pDJtE5EifWcIY5AGAJsOGssru6bYY6mzGQ1L8ADmFI1qkCUi0bYLdyrzMuCFeSc0JpsZSdlcxS3P2oDMyTieCBzbOM7lvZmV1gg03h2Yy5f0VSosYScgBtGi5Fb7OOninMkNSX13uAL6mn1iK0aKbBtWhiYO2tzbafY0ZlVJmWMRwDW0As2tgAM3XVJ0y0WGQwmmZ6glKGh5gedGcYhtYNQUJApQXp+qFS7OFTipz+9E0tfopC1ZTE3DzXQYJpx60QOWSlJfXfUjLtWv0UcfiGI7vgmEcuvEqOkIJhUGyjkuq045sWk4IARKAxV4DVdhtWFdKyxWWqu1qtQggJmtU7GLkNilAVaTXNRQRpeoVsNXdVCbGSxWQNDn1VWLxSQcSSa0416zMS9clmcYwsuGR5k5U2PLIkuRfjTXsN72Fe1afEMMdUNple3j0BVpnDS1pGrXVFDXeeILTbOwDgw7I1oV/Hyvp4ffCFwxenNyI1ofDpPSp/+iH3wqD6YSSSTQx2kA+kO5G90KlVX9ID8+7kb3QhlarK9ujHqJgU4FMbZUJ3FWQ7E1OVP+kaUJB6eHhAYM+YtmA14gb9KIQsNjHMgc9+pPRXQg1OfCa4UIVaFLxG5moV1uSNJoJPYX/SVn56TcAQajfTtot2WqnNybXg2untGnlM3L6lTWqECIQ4Hca9a2WOSWoTVvOFmXsFbAnbxDkVRNa7RQj4liQ3Q2HmLnkIThzbIjoe7WlMS9FCH/KIo5CDYLPk7a8MXoTLBXZcKJrKBSwDZZtlloVuE4DNC4syGoDPYjEe7UaaezjTg01kxi8Jg4TxyZ9QVT5RMJ4LHEb7Ac11lJSQe91ss6ntK1WHYU1oAeS5Gy0kh46CaZdPgrkLFgcweW3tV2WlobRwWtHMrAlW7gnotxDDjBwsU17AbFSmWANRZIhK+CoNMYY3zqA++XIsZpO5zaga3MLfovSHMQDSCRDmk9d7cgCcqMo8oYCKn3stDocazkrxTEPrc0j2IXPyztY50rQfqiOhZ+myw2/DQup49i1jKvpRJJJUlj8fZWO7kb3QqDyGhFsceBFdvoOwLOThJCi+G+HQVi2MOHBYOEeqqpYRhb3v14jiRurmiHxQFxcVZln0tsU2rGpQNbQAADiRJr0ChR7ogyPUZqsanLFbMQFIIc+Nxq1KxAUJs0nc1MIVhwTNVFKM7j8prNrRefYkNSuqaV5l6zOQtZpC820ikixxNLJypyifQf8AhcSJ+zhd6IpZFwoq2jDi2RxQjZCh96IguG4qbAqco047psC9PYgkOdCNSJ1gFk2V5lhcfe9qKKBJatSdqNfFdtFSxB2qEjclngGgROA5ZZk4A5GJWbrTNAsHmPIUzZqiglnil+1NjPCtPa8I4K7WqHQHbkTgssgrEZCo4jDqwom5igjNspTZ4eW4rHY0kGld9FT0NdWfliPvELreEW0pkOGSG58y7oRhhE3AcRlEYcreeFrKzsfQSS4krZMRpJHpMOHE3uhVWQ9YVVHTQPE28iurqs7oVjApjXZyGhUXtvj1EsaUNDZZyPMlj6b1u7ELKaUYY1zS5ho4VI5UrFS+VaJiMNl3vA99gVb5ShwPwLa7Km1TxDMrHvwiI93DJB5CTzLVaPYOWDzTvq7Ou+iqWSDzaK4VLRX8OK4knJuQA5AtDLwqKGVl6BEYcNKDKnMUhCQau0TRUb2oLimGtfnzo45VozapURm4OEtgyeIAZOhs6nO8VhG4aCKiy9RxUfQZz0Y7xXlcObYxvDfcbAexTltWGvOzIrHszyWn0Wj69ll40cvFWhxG/Z1rQaENNyRS6VnheN+m+hStkH0gkDq6wGSPy8SyinSSKBLUV5eNzU6YbzUXraq4zSWKHBuq0VIFaE7VpcewBr3F1DU9CEy2j3CszrJ7U5YVmV6F4T4tADFOscmspWnHayL4dhR8573OJ+qSSB0qLDcLe3YBz3R+WgUzKVy2JNfKaXlgERhqGG2isAIgpjwq7gp3lQPclRAbEZRr6gi9KhRaOSobFh2yiM7wV+aFwn4JDpGYdmsOnWCc7TY9CSXElu5mC0vjasd9tje6EM0efXXO93sCFeU7FIgm3wYedIe6p1mDJX9FpV8OAxr/AD6VdxEmtztKmz5b4edRpddVpiHrZhTwuNSPZRFnhpqQKEoBsViExTEJ7WKBpPAYrzGCipQgQVZcaCwV4xnlDoijquxXbrrhCdTpG9yicpHhNcFJqONN+gzlLH4Mdq8SmZOouaknPmPgvb8b/gZv0Y7V5DJsLq1329vaFNurCk2ZKB7WBlbBbHRSXo0HegUCUL3ADLatvhcsGNACVrbHHQ3BFkorLLkEq0TUJdq6CJmACLod8UobIvMRAqzTdI4ZBYbIjAgqGCxX4TE5E09jE5wTg1MeEwhiKrFKtRFSiZpVKB6uYUPnG02ub3gqrwpsOmWtiQwSAXPaBxkkCiIV6btJJJbuZ53pJg7HzzoxFw1g4rNFDyhEJaVJyCfpBNasdzSRSjeXzQqBmyLg2U3t08c/T4XHsIzFEnRDSh6UJZpTDrql/S11OkiiuGfhvbVrgRxEURuNfbfmOMmL0OauQn1QwN1uEFclnqZSygjDKsBqqy7upWi+iuMcjHi1lx5NLZrjogJ1dqRFG0qkNGhceE9gO1NekkPx40kZv0Y7V5fKMsMrivSe1emaTn9nTvovavJ8HiAQ2U2DbvqSllPk8P3NhhEuKVWqkJbWosjgU2CNU5haJs6WiyiNxeNCIUTSUJGPsBo57QdxI7FdZijHizhzI3D1VDE3lpqMio5aZBViOA80FxtQmLLuhur9XsUr1NaaOWeiMNyzsnMb0XgxqqpWVEaqF6Z8Im69UbDrlUe26suKjIRUqUewQSNF+lyY3zDOgPHtIRuaNiss15M/JjdEhn80QeCMe0Z3w9qSXUlu53k/lQjOZFDmkghze5kd4VJ81EaA5lHtcAQCaGhFRehqr/lSHD/yZ3EL0bjh8MMObDT/ABOXtCmtuPLQ5hQe8Bz2MbX6ov0lXnYcwGoY0HiChY4NdrV4ItfIciuMnGG2u3pSdG8uzmMsuth0yT3UIsRzXUTozW5lKwtrcNSOaDnZRQo7XCoNVIx9RvVRnXGw+HrUob7VO1lslC96laUFdnlQPKeXKvHiJJUtIn0kJ02PzYzFRc7QvGcJjAAs2g16dy9c0jdXDp/0Q7y8KlpgteCLVoE7NxO9ZNQ+O5hDmm6KyGkryQ0w9Y8RQSXih7QRkfchaTAJRutVZ6bzL6GJaVa8gvhNZXOntKJw8DgA1DAOlMabim9GZcWCS92GQZcCwFAmTEAHMIg1ihmWWRYXuBXyurlcJzCRkqk/iYgnhZHddWZGaZEFWHmUn5XIcUniVphUMOGp2BMjqJj1ISoIz000Pn38EjfbpQOEyk9Ln+7CA5A8VRlw1n8Tb8+xA5h9MQlG740M/wDMBPHtGXT2ZJJJbOd5d5T2Vc7lZ3VjMMi/BvDgTuPIfeq2/lKZUv5YfYFgxDNMlF7Xj0IPxN5eWOJcRl77QrLDEdTg6vL+iZh0ejaloqKN1iL0zAr0q0ZtpPndF+xD0uLKXHdTQ4UQZPIrsCKSmFPeKxHu1f6a3PQq8nFaMkSZE4zdG4nPKXpI2SDD82SANhNR1q3CmCBQqsHnbku6wrmkwsXGvPWpw5D4L63IIO5SufetbI2mxO+JRD4sQuNAmTExWwzUsrCpyo2npDpBCphk96KvQar5/OTSvofSY0w2e9CeuoXz04jUbvr0hXOmWXYjhUwRwCbE1HE6g7VoJXE3sdYgLK5EV/paUcwuOH50ravKpyny14r501cHHSQKuA5Fdhz7nDg6x5yqco1m4K/D1ajaLWWbvmMWZeJHdk6nOT2WRCFKRX01nnm8UpaIaUyG5FIDrJ+IxysnSOXw1jAfrE5k3PJfYh8zJNY4PYKbwNoRdzlXjQ6qaz2UCPUKcPQ8NopGvQFt70Pmo9F2NGUctDLjrO5kJqaWg0ZU5m5Wbnf5lJekZ3wtY8WWbxCH9NkX/wB9jel7T7Cnj2zy6evJJJLdg818ox4T/wDDsCwjXrd+UOms8H+32BYQ0UZdrx6FJCaLYL2ADhuFduW9TSUMOcB08SGybxRwruNOpStn2QnNc91L5ZmnINi1uMuMRhllM9RrGYa2xbzq3DlhsKpy02LGvJuO5WhMG5oFjJHana0cSZFgXqKcW2igl4xrW1Lp0eca25KCt1UtxQkjjVaLNEmgzVMzReaCwV+UlAEIuW3ZaDtKIQ2rrIYCeShO1LSs/syd9F7V4LPMoIbBycuQXvGkzgcOnR/aHeXg5GvEA2NHv106FePTK9lNwTDc0OIu2ooQSBWwcBkeJQQJotdUUtx5p8xLOc8kmxOZuTyb1FEkyL1Abs1rE8wqnoS1spCdcQNU1BAIr75rQyjIljfoWJ0ffQBpORqOQ59a9OwZ/BFVjnNV1YclynaWVDtoROECApWwQRUKVjAFOjtQ0KeWlSFMc8ILaCIFUivAT48dQshFxqUhtyGwuN8tiKQodAmQYYCnJQm1FEQ2PLa8WXIzZMQXf8wD1Eq/EK5I3jQ/xt7wTnaMvMbxJcSXQweLeU3E3iciQhTV1YZyvXVBWHfMPP1jzLYeU9o+PxCT9WH3AsS+NegsOtO2Rpx8WWX9RNLRnMJIdcinIq8aIST1naV0qMhRba7MePHGakF8Mx10NoY+paMjtaPaEWZpSwCusabi1ZB7CmRG8A8qCyxa2NpfVp1Gk032TJTFHxaFxodlMuRZSQzpvRPCnhp1Tke1Kp9u8dvQsImBYHNaKDFC8/l5jVIrlv8AFabD5moF6qIzrRCIo48cNBJVUzLQLlY7SfSH6jDc2sqKTdFH4r8NLYoM2sgw+S7n17F5YXUyAG2y3ejDfoGKXqTChk/miLEuYtcJ4Z809uWv8QltQFwAxH1+qLD2nt6FNDFiNyuYfL0r75n36Vrhj7snLzZ+zG1yVhkPFORbnCZ61DYixCz+ESmtEbbj6EWxCW1TrAXWPqJJlpp6LK5Y2tdLToO1WxMheasxZzf6h0IpLYu99hVYO7e2zfNBCpvFmg6ocK7kMjse4ecabhmqMOSoa9anYkaSWdW6JwQgkg0gIzBRBVoBcc5IOUbihBjyn4a351n4m9oTCFYw9vzrPxN7QnO01tEkkl0MXgnlSd+0ovEyH3AsaQtp5Tv5lF/DC7gWNi2Km9vQ45/zlTMbaqiBuppY2TTRJtrwa9pITIrOAVMmRRVpQWWKpLvoa7lccw5t5VSaKKVkQgcnWE/llLrHVEYOIuc3I1yVqWxGI3zXU4qoTKOc5p4WTj219qlZGJscwUrBhx4+LfkTi4hFNi833IfThEuz359CkrVccUNvZj8RqNFj9CxT0MLvRFkDda/RMVksU44ULvRFlQxbYdPO9T/JfwgY3hco60WwtlajnQ6KNu41RbCHcMcYI9vsW3HdZRweqx93Df68tJgEuA5xOwdv/SvT8MEKnLF7QS0VG1J80TmCFy+pu+StvQY2cM/vyGR8P86y5IM1SEXBBaoRK1C5tu6DEuKgJsSV3JmGPNKFEnMRBvSnBYQr8M71AWKWGq0Vq01yVFxikY1BOUViQHzjPxN7UwMU8i35xv4m9qqRFaxJJJbMng/lQP7Tifhh9wLHTO9a7ypfzOL+GF3Asm6441N7ejx/sn+Gy8T3unAqszNThDSXweSkb15E1hTmm6RqurmmcSuFt+VRRYNCOP3CbPLGuYe/Vc4HbQ84sfYp4pvXePf2qm5hF9qY+Kfaidpt9uOhQPtZNeSUyXfVqew3rzIrbG7kv22GizaSOJehhd6IslrLXaMO+hYl6KH3oiyBK1w6ef6v+W/g1xU+Hxyxw/8AU9XvZQLrhtGY61fTlslmq9KwRzHsqDW/ODaxV58iDsWBwLFDCeHi7T5zd48QvS4MRr2hzTUEVB4iuflluVt+W3DJjjMZ8BjpAbkxsrRGKKNzVjprtRhQKGqJNZUJoorLESDaq6EoiyhV9wVZ4T0NpILVO0UTIRTnvTkK09SSb/nGfib2qs4lOkv3rPxN7U4TZpJJLVk8C8q/8yifgh9wLJVW/wDKVgUzGnnvhy8V7NVgDmsc4GjRWhCyzdF537pMerd4JV3ceU9s8/AM8baJ7UU+S8990mPVv8F35LT33SY9W/wSae/H7CwkH3CLDRed+6THq3+CUTRedoKSkxmP9N/gjQ98+4GuTJg8HjF+hGvk1O/dJj1bvBcfoxOEfwkx6t3gjSrnLOwaIa03H2qrGhWO8da0EDRmd1aOlJi1v3bstmxNi6KzpFpSYP8Atur2ITncbj2ENglh1XGxAINHAZDYeVOB3GvIiLdFp4UIk5gHbSG/wUzdF5w5ykx6t/gnZ5Z8PJ+nVvQxoc4mSxT0ULvRFmaLc6MYHMslMRY6BFa58OGGNLCC4gvqGjbmFm/kzO/dY/q3+C0w6cnqLvkv4ByU9iJ/Jid+6x/Vv8FK3Rqd+6x/Vv8ABXtgEB2qa7Dnxca2GiWMah+CeeA7zSfquOzkPbyoK7Rqdr/Cx/Vv8E6Bo5OtNPisemz5t9uI2U5SWaVjbHpi4QhOjzJrV+DjS8YEea9zH3G5xpnxo6JKL9m/8pXLljZdN5ZVVTwnp/xCJ9m78pSbJRfs3flKNUbdc5QFW/iUT+h/5SuCQiV8x/QUap7is1TNV2DgsQ56reU1PQEQg4I0ZuJ5KAe1VMaVykBFZkIJL2ENJAcCTQ0F960EKQhtyaOU3PSVZVTFFzJJdSVocXEkkGSSSSA6kkkgOJJJIBJBJJAdXEkkAgupJIJ1JJJAJJJJAcSSSSBJJJIMkkkkES6kkmCSSSQCSSSQH//Z')
+GO
+INSERT [dbo].[News] ([NewsID], [NewsContext], [NewImage]) VALUES (6, N'The acne skincare industry is experiencing a boom, driven by increased consumer demand for effective and natural remedies. Companies are launching innovative products infused with powerful acne-fighting ingredients, offering personalized solutions for diverse skin types and concerns.', N'data:image/jpeg;base64,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')
+GO
+INSERT [dbo].[News] ([NewsID], [NewsContext], [NewImage]) VALUES (7, N'Recent studies have explored the link between stress and acne, revealing that psychological well-being can significantly influence acne flare-ups. These findings underscore the importance of addressing stress through mindfulness practices and stress-reduction techniques as part of acne management.', N'data:image/jpeg;base64,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')
+GO
+INSERT [dbo].[News] ([NewsID], [NewsContext], [NewImage]) VALUES (8, N'A comprehensive study focusing on teenage acne reveals its profound impact on self-confidence and social relationships. Researchers found that proactive acne management positively correlated with improved self-esteem and social interactions among teenagers, emphasizing the need for early intervention and support.', N'data:image/jpeg;base64,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')
+GO
+INSERT [dbo].[News] ([NewsID], [NewsContext], [NewImage]) VALUES (9, N'Employers are recognizing the importance of acne awareness in the workplace and promoting a positive work environment that acknowledges and accommodates employees with acne concerns. By implementing inclusive policies and encouraging open dialogues, companies aim to support employees'' overall well-being and mental health', N'data:image/jpeg;base64,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')
+GO
+INSERT [dbo].[News] ([NewsID], [NewsContext], [NewImage]) VALUES (10, N'A new helpline dedicated to teenage acne has been launched, providing expert guidance and emotional support to adolescents navigating the challenges of acne. The helpline aims to bridge the gap in acne education and provide teens with accurate information to make informed decisions about their skincare journey.', N'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAoHCBUVFRgSEhUYGBgYGBgYGhgYEhISGBIYGBgZGhoYGBgcIS4lHB4rHxgYJjgmKy8xNTU1GiQ7QDs0Py40NTEBDAwMEA8QHhISGjQhJCs0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQ0NDQxNDQ0NDQ0NDQ0NDQ0MTQxMTE0NP/AABEIALcBEwMBIgACEQEDEQH/xAAbAAABBQEBAAAAAAAAAAAAAAAAAQIDBAUGB//EADgQAAIBAgQDBgUCBQQDAAAAAAABAgMRBBIhMQVBUQYiYXGBkRMyobHRwfAUI0KS8TNicuEVUsL/xAAZAQADAQEBAAAAAAAAAAAAAAAAAQIDBAX/xAAiEQEBAAIDAAIDAAMAAAAAAAAAAQIRAyExEkEiMlETQmH/2gAMAwEAAhEDEQA/AO+sAIBGACwAAAMVAAh1hEOAKWN+UxmbWN+UxJMVDW4G9ZehDx6Pfj5C8El3peS/Ubx2Xej5MPovtzHabiPwaDyu0592PVX3a9DzKpqdF2wx2evkT0grer1f6HNyZFa4zpG97iJX39uo6aGXA00Eh8Y3dkhaMH/0dFwvg7dm1q+vIjLLS8cdselgpOy+34NjCcIa70lp0uvr0R02D4RGO+r6mjTwUVy/6M7lWsxkc9huFuTTktFy6m7hsCktjQhQS5EqgQe1OOFRN/DosqA5RHotqk8OiCeDi+RpZRlg0Nsmpw2DVrHMca4JkaqQWiabtutTvJQK9ekmmnsVLqllNxY4W/5cbtPRarZl1MocKhlgo/8Aq2vwXrHTLuOWzVDGSHjJARrGMexrQA0BbCAGwgACiAAAAAmIxUAOQ5DESRQBRx/ymFJm7xD5TBkLINHhMrSfkQdoKyis72jGTfklcrYau02zI7W45/Bn/wAXH+7QX0Wu3muJruc5TlvKTk/V3GRV9Ri1Hx2IreI6kuYYeDYlXV2NTAUbBbqCTdanBOHXeaSOywcFpYxeHvkjdw21jDL1tj4uQiTwZBElgyVJEyWKIYE8RkcrDhIj0MG2GSiSjZASJoilAma5iNAZmEdpNdf0LxmOWVp9GaSN+O7xc/JNZEYxj2MZbM1gwYjYAXAjzCgGyAAUQEFEAEYqBoVACj4jB6AKeOWhz9RbnS4r5Wc5NasVJWpJ3MPtfB/Bl42+6OkgtTD7VL+TIVOevOHGyGt29vr+7j5vb3ZWnP6/YiNr0koq7v6/v0sa2Dlr6f4+plQ0LmFqBkeLruGy2XX9/vzOioR0Oa4KnKWnKyR11KlZGF9bTwiZLBXF+GVsZxKFH52r8oppyfoLWz3pdjEmizllxutN6UpJcktX6sfV4vWWrpSVvOX2KmJbdSpdBYT1OUh2idu9BxZNR46ntf1+4w6lsbmM7DYvPsWHOwtknlJEVSokY/EuLRp7+25z0+J4mvL+VBqPVqy+ug5Ni3TrJ4iD0utdN1qaeGlmhF+C9zh6fCK8u9Oav4fmx1fAaknTyz+aEnFvr4/UvDqsuTuNGRGySREzViBrHSGlAZQFAkNYBUDKIgAAAAAMAchUNiOAIcX8rOdnudDjPlZz8txUEiYHaz/RkuuhvnO9qp9xLx/f3Jvh4+vPK/P29CpB3d+RZxsrd0rRYY+LyvaRzL/C6EpyUYmdFXZ1/ZOks6f7/ehOV1FYd11fA+F5I3lubT0QUoj5owbqs4Sn3VJxXVb+nQjw3C6VPVK7e8pPM36ssTqW2MriXFI04uUnfwBPrWlKK2KlbERXNfQ8/wCI9p60240+6rN5neKsr7ddue4zs/iqmJqRpuq05KV/5NO0bK61d817dFY1mGViLySdO1rTjLo/Yrfw0G9jLrYedCajUyq70nBZYz8Jx5M2cPBu1zOyy6ayyzbRwVkrFjETtG4mDokvEKfcduQg5fE5XJznb1H0Mctowm14QdvQwe0+OdOUIRteWqbTagr2zNLfn7MxeE1vi1KanOrJuWWSbskm7JxkpXvr0W3M0xwtm0ZZzG6ek4bHRlps+jTi/Zm9gV3L9Xf7L9DzecamHrwipynB7Z5OUoPwlv6Ho+AlenFjxx1kzzvyx2sSI2SMjZqyNkNQswSAFATMABsiMUCiNCwCsAQGFhQBIjxiHgEOL+VnPy3OgxXys5+W7FQazk+11SyVvH1OsZyXHJ3xOHg9s8G/70Rl4rD9lLDdhs0VKtVcZy1yRy93wbd7swONdnauGd33oXtdKzj0zL9UdfRw8pYmUJ69/R35XNrFYZSbpyV4tc7v6mGPJk7MuHHx5Rh6Tb2O57M4a1h1fgcI6r2slovI0+C07PQeWXyRjj8XRQWgrQ2MtfC2/iTJEqU61JtaGHjeBfE/1Hfw5HU2ElTAo4XG9mYSSW1tOasvQThXA3h5OdN2la2a12k97X0R23wESKglyKmWX9K44/xzX8G5O87yfVtmhh8PlSSVktF4GjOmJ8MFDDwsTzhmTTI4THwnqSenM8U4NCp88FKUdE5K+nkZVDgUYTz04qEuq1S8k9DtsRBN36laVEct/pWS+xgw4Tmd6knN9XbTyS0OqwGkEuhXjTLWG2aNML+TLkx/FNIYx8hjN2BrEkxzGMAjAlsBIbQgoiKIjFBgkACBi2EYEaiREcSWIBVx0rRZzEMQm3rzOl4vH+XLyZ5OsbOE5a/1PT1FQ7epKyucXxd5sTCXS3vmN3DY7PAy8fS1z9LfR3/+Scp0rH1qYS0qkKq3bUZrpK1/s7+pH2g4jO/w6btfRtb252fIg4RJxrtf0zgpLpnpvl5wb/tH8Tw1q+aWz2fI5csfjlp6GGXyxlrQwsHKClLdxS9dE37juH07EmGqJJQXLVeJPTSTYRNW8ra8vHVk0Z628CGErBGT3538tBks3G/EsQuorkct7v8AGgHMUssR0HxrN8vqVc6aTX4v7iwnz/UF/GLsmlrcrVq65DastDKxNazS5vYLSmK/Kv1ZYhF6Mo0aGmaTLKxqWiQhZrxamnYibD+MVraEPxblQtdpVK2xLhJ3foVsxYwcNW/ArD9mfL+tW2RsfIjkzpchrkOihqQ9EggCgUGwwAQCFhUIKkAAjFACJFDkIh0QCDiMLwa8Dx3idCUakrrTMz2nEK8WcVxThsZ3dhUORwGIy6G7Rp54vro16GVPAOEjdwFOy9BHFHDLLKPWDTjfmrNWfmnb0ZvRpqVmrSjyvrbwM3FUdcyWq181zRmYrjjoNfD7yk9Yu6t18mZcmO2/Fnrp0daCzXUVfloRU5625rf9DJj2opTsldTemWUXu/HYdh3LPnb+ZbcjDVldPVnrooMkd7ablejO9idNpWX78CkhQT1atfQjqwdt9NESyb0Wntshtapbx9AVLdoZU09NkhkoxjpbQe55ldJr9+I1wcmm9F0eoLl/qRRuZ/FMHJ2nT3jrba5pxshWriTvVctjnWqx+GnOnfdx0duia2DA8PnSt3pyXPNNyv46nS/DS1EnONu64t9LoP8Agt3eox6lKeiTy5nq+dvB8jVhTypJbISbTspaPkuY6+moaK2/Y/U0MKrRv1ZnQ3TNJaRS8DXine2PNl1o2cwihUhWzZzAEhkSRABcAsBQbAgABAVCDkAFhBQsBEHRGWJIoAKy7pzlb5mdJW+VnNYh95+YqbPxNBN7EcFbQt1CpN2YgZXnZGPxrs/F0o1rzlWnnkoRcVGEY6K6tdtvxWxtULSnrsk35vl9bDsfWyxs90kvKy2RnyZadHDx/LuvNqSWeMnya9DubaI88x+KvVnl2zy+kmejQ+SL6pP6Gef1WmHtibDYi2jNKFXmn+phJlihiOTM9tJG253/ACV52e7eluuviUVWUU9dPt5FarjWnd3y9cs/vaw9rmP8bedew3PoZlDHQnbK0+WlixGbtvfxBNmjq2LUFeTskU6nH6aXdkm/NFmdCMlaSTXR63KU+HQj8kFrySSsEPGS3tSr8Yc9bu3RJv7FVcWje2az8U0a8YxWjXuPdCno8qZXTedKEOIJ6uS9dDQwmPU45b3ae66DZ0oPRJWLOHwkYJZUl5BWXJV/DRvYvpEGDpaXLigbcc1Hn8mW8jFEHElGs1QjsKkLYEAIA6wAGoIwuJcCOHIRCoAWwMVA0BGokQyJIhg2t8rOYxD7z8zpsR8rOUxk9WTTR1GUppykordsZPE23LHDY3cqj5aLz5k5XU2rGfK6Wvhxpx8ebOX7Q8RUIyl0Xu+S9zVx1Wc21Ti5eSbM2fZuVdJ11ZJ3Uc1/V29Tm9vbtn449PN8HCVSpGMdXKST57vVnrDp6KK5JL6E3D+zlCjZxjquexerZY7aeXMrPL5M8JpmRwU3yt5ki4Y95S9vyXoVhtfFJLVkaa7RqEIrRa9XqQYmumtdfDkvMp1+IwV8upSeMvLVL11QpdNJYlnUhmioxtNt2alurPS3nZk9SrPNlWlur/CEw8Unn3fglouiRPTs5trZ6Pwe497pnUMQ75ZaPo9L+XVFhpstRw8ZwcH5p84tc0VqE94yXejoyUaVqlORGsNN/wCDVjOO1iSDW1h6PeUU8LhWtWXaVPM8qQudXt4XL2Bp6Zuu3kaYY7rDkysm6sQgkrIcAHQ5CNDGPY1gDWIhwhQKAAAXxUhEOiBJEgsIOAipBIbOooq8nZeJm4njUI/LeXlsK5SeqmNvjSQ+5y+I4/N/IlH6sy8Rj6s95y9Hb7Gd5sZ40nDlfXb4ivC1syv5o5jHUpRbbW+xz+dqcZN7ST9mdbx2V4Ql+9UL/J8sbYd45jlJXPujmei1NSMMsVFbL6vmyLDU+b3e3gixYxtt9bSYzwQjZCZ7aCyTtpZ+titL4j/oivOf4QBPKoUcVioxWrXmNng60nrNRX+2Ovu/wV3wGDd53m+snf2Wy9ANQxHEU/lld+Bm168pfM2dJ/4uEdkkZPGcKo2kvJi0rbKc2PhIjSH7Ae1ulUcdn6Gjw/FRzpNWu/qYikSQuTo9u7pb25Gbx3DSg/ix20Uv0f6exZ4Vis8E38y0f5NGWWUXGaumrW63KkKZarmaWKutXqTrGrkwrcIhB21ty7zH08NCO0V57v3YlXKVJTq31tp9zoZzUKSqS2Su0uRgI1e0NTLhlHrlRtx3Utc3LPlZDKXF6cubXmi7TrRl8sk/U5/gtKKlGc75YJz3tmcVdJ+FyBSad1pz00t4LwCct1ujLhkuo6ljWYtDiM46N3XiaFLGxlvozTHPGssuPLFZEC4XKQUBAKC/EfEZEegI9EOKxKhG79F1JbmBxCvnm+i0RGeXxisMflVbF4mU3eT9OSKUyeoVJs47bb27MZJ4ZIYwchLiUhqnU4nv4em/+Jy1Q3sJWzUYQ6Xv9kaYXUrLOb0kih1htxJVLBTxhyFukQwbYsgh5JJTI5YiKV2ypKhVm+9NRj0jG8v7np9BP/Gw3knN9Zty+j0Q9p0rYvjENcl5v/ZFy97bGBjcbKe6sunP1OpnTSWiSOb4vBKaa5rX0/yKrnijBCyYIRiOFpl7D0XJ2S1K1KBqcNmlNX56AKuYC8Hrs9PwasMQUMTRvsRUJt+a3F2Om3O0429vAz5Jp2fIsYWdtyfF0VJZluvqh+p3pQi9V5otdrKndpw6v7L/ALKV+9H/AJR+5N2xnadPwT+6Ln61PucQ5nksvLToRpO+vQfgKilYmxyScbdGZ/TXK9okORGmSQYiXMNiHHR7GjGV9TKgi5hZ/wBJvx5/Vc/Lh9xaAQDfbFoRJEADJDjamWDfp7mBIAOfm9dHF4r1SjVYoHPW8VnIFIUAM3JmaiubsbtOCjFRWyFAvFGRWx0Y3ABklyEc4gAGZmsRzq2EAC+2PjOKq7hHWS33SRi4io5O8gAFIbioQBHF/h1BVJqLdluzcxPDo5O7pJapre653ABQVawtRTgpW3Wvg9mve5TxNFwl8Rbc11TACr4merdCZdpzEAIKgr4a0oSW2eN101KXbudpwXgAFf61OP7xU4ZUdi3i5vMvL9QAz+muXqOOpPBigIqtUyWnKzTACp6jLxfAAOtyP//Z')
+GO
+SET IDENTITY_INSERT [dbo].[News] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Patient] ON 
+GO
+INSERT [dbo].[Patient] ([PatientID], [Name], [Address], [ContactDetails], [Dob], [MedicalHistory], [AccountID]) VALUES (1, N'Hoang Hieu', N'Viet Nam ', N'Viet Nam', N'24/03/2001', N'No', 2)
+GO
+INSERT [dbo].[Patient] ([PatientID], [Name], [Address], [ContactDetails], [Dob], [MedicalHistory], [AccountID]) VALUES (2, N'Hoang Ho ', N'Viet Nam', N'Viet Nam', N'20/01/1997', N'No', 3)
+GO
+INSERT [dbo].[Patient] ([PatientID], [Name], [Address], [ContactDetails], [Dob], [MedicalHistory], [AccountID]) VALUES (3, N'Hoang Hung', N'Viet Nam', N'Viet Nam', N'19/03/1998', N'No', 4)
+GO
+INSERT [dbo].[Patient] ([PatientID], [Name], [Address], [ContactDetails], [Dob], [MedicalHistory], [AccountID]) VALUES (4, N'Vinh Khang', N'Viet Nam', N'Viet Nam', N'17/03/1989', N'No', 5)
+GO
+INSERT [dbo].[Patient] ([PatientID], [Name], [Address], [ContactDetails], [Dob], [MedicalHistory], [AccountID]) VALUES (5, N'Minh Kha ', N'Viet Nam', N'Viet Nam', N'12/10/1999', N'No', 6)
+GO
+SET IDENTITY_INSERT [dbo].[Patient] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Prescription] ON 
+GO
+INSERT [dbo].[Prescription] ([PrescriptionID], [PrescriptionDate], [PatientID], [MedicationID]) VALUES (1, N'28/07/2023', 1, 1)
+GO
+INSERT [dbo].[Prescription] ([PrescriptionID], [PrescriptionDate], [PatientID], [MedicationID]) VALUES (2, N'28/07/2023', 2, 2)
+GO
+INSERT [dbo].[Prescription] ([PrescriptionID], [PrescriptionDate], [PatientID], [MedicationID]) VALUES (3, N'28/07/2023', 3, 3)
+GO
+INSERT [dbo].[Prescription] ([PrescriptionID], [PrescriptionDate], [PatientID], [MedicationID]) VALUES (4, N'28/07/2023', 4, 4)
+GO
+INSERT [dbo].[Prescription] ([PrescriptionID], [PrescriptionDate], [PatientID], [MedicationID]) VALUES (5, N'28/07/2023', 5, 5)
+GO
+SET IDENTITY_INSERT [dbo].[Prescription] OFF
+GO
+SET IDENTITY_INSERT [dbo].[ReportFromAi] ON 
+GO
+INSERT [dbo].[ReportFromAi] ([ReportAiID], [PatientID], [DoctorID], [DateCreate], [ReportContent]) VALUES (1, 1, 1, N'26/6/2023', N' comedonal, inflammatory, cystic')
+GO
+INSERT [dbo].[ReportFromAi] ([ReportAiID], [PatientID], [DoctorID], [DateCreate], [ReportContent]) VALUES (2, 2, 2, N'20/7/2023', N'antibiotics, hormonal therapies')
+GO
+INSERT [dbo].[ReportFromAi] ([ReportAiID], [PatientID], [DoctorID], [DateCreate], [ReportContent]) VALUES (3, 3, 3, N'10/7/2023', N'acne scarring')
+GO
+INSERT [dbo].[ReportFromAi] ([ReportAiID], [PatientID], [DoctorID], [DateCreate], [ReportContent]) VALUES (4, 4, 4, N'15/6/2023', N'Papules,Pustules')
+GO
+INSERT [dbo].[ReportFromAi] ([ReportAiID], [PatientID], [DoctorID], [DateCreate], [ReportContent]) VALUES (5, 5, 5, N'28/7/2023', N'Nodules,Cysts,Excess Sebum ')
+GO
+SET IDENTITY_INSERT [dbo].[ReportFromAi] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Role] ON 
+GO
+INSERT [dbo].[Role] ([RoleID], [RoleName]) VALUES (1, N'Admin')
+GO
+INSERT [dbo].[Role] ([RoleID], [RoleName]) VALUES (2, N'Doctor')
+GO
+INSERT [dbo].[Role] ([RoleID], [RoleName]) VALUES (3, N'Customer')
+GO
+INSERT [dbo].[Role] ([RoleID], [RoleName]) VALUES (4, N'Personal')
+GO
+SET IDENTITY_INSERT [dbo].[Role] OFF
+GO
+SET IDENTITY_INSERT [dbo].[RoleSpecialist] ON 
+GO
+INSERT [dbo].[RoleSpecialist] ([RoleSpecialistID], [RoleSpecialistName]) VALUES (1, N'Dean')
+GO
+INSERT [dbo].[RoleSpecialist] ([RoleSpecialistID], [RoleSpecialistName]) VALUES (2, N'Dean associate')
+GO
+INSERT [dbo].[RoleSpecialist] ([RoleSpecialistID], [RoleSpecialistName]) VALUES (3, N'Doctor')
+GO
+INSERT [dbo].[RoleSpecialist] ([RoleSpecialistID], [RoleSpecialistName]) VALUES (4, N'Intern')
+GO
+SET IDENTITY_INSERT [dbo].[RoleSpecialist] OFF
+GO
+SET IDENTITY_INSERT [dbo].[RoomClinic] ON 
+GO
+INSERT [dbo].[RoomClinic] ([RoomClinicID], [RoomClinicName], [DoctorID], [SpecialistID]) VALUES (1, N'A01', 1, 1)
+GO
+INSERT [dbo].[RoomClinic] ([RoomClinicID], [RoomClinicName], [DoctorID], [SpecialistID]) VALUES (2, N'A02', 3, 2)
+GO
+INSERT [dbo].[RoomClinic] ([RoomClinicID], [RoomClinicName], [DoctorID], [SpecialistID]) VALUES (3, N'B01', 2, 4)
+GO
+INSERT [dbo].[RoomClinic] ([RoomClinicID], [RoomClinicName], [DoctorID], [SpecialistID]) VALUES (4, N'B02', 4, 8)
+GO
+INSERT [dbo].[RoomClinic] ([RoomClinicID], [RoomClinicName], [DoctorID], [SpecialistID]) VALUES (5, N'A03', 5, 10)
+GO
+SET IDENTITY_INSERT [dbo].[RoomClinic] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Specialist] ON 
+GO
+INSERT [dbo].[Specialist] ([SpecialistID], [SpecialistName]) VALUES (1, N'Acne and Skincare Specialist')
+GO
+INSERT [dbo].[Specialist] ([SpecialistID], [SpecialistName]) VALUES (2, N'Hormonal Acne Specialist')
+GO
+INSERT [dbo].[Specialist] ([SpecialistID], [SpecialistName]) VALUES (3, N'Adolescent Acne Specialist')
+GO
+INSERT [dbo].[Specialist] ([SpecialistID], [SpecialistName]) VALUES (4, N'Acne Scar Reconstruction Specialist')
+GO
+INSERT [dbo].[Specialist] ([SpecialistID], [SpecialistName]) VALUES (5, N'Adult Acne Management Specialist')
+GO
+INSERT [dbo].[Specialist] ([SpecialistID], [SpecialistName]) VALUES (6, N'Severe Acne Treatment Specialist')
+GO
+INSERT [dbo].[Specialist] ([SpecialistID], [SpecialistName]) VALUES (7, N'Combination Therapy Acne Specialist')
+GO
+INSERT [dbo].[Specialist] ([SpecialistID], [SpecialistName]) VALUES (8, N'Dermatological Nutrition and Acne Specialist')
+GO
+INSERT [dbo].[Specialist] ([SpecialistID], [SpecialistName]) VALUES (9, N'Adult Female Hormonal Acne Specialist')
+GO
+INSERT [dbo].[Specialist] ([SpecialistID], [SpecialistName]) VALUES (10, N'Innovative Acne Research Specialist')
+GO
+SET IDENTITY_INSERT [dbo].[Specialist] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Treatment] ON 
+GO
+INSERT [dbo].[Treatment] ([TreatmentID], [TreatmentName], [Description], [Cost]) VALUES (1, N'Antibiotics', N'These work by killing excess skin bacteria and reducing redness and inflammation. For the first few months of treatment, you may use both a retinoid and an antibiotic, with the antibiotic applied in the morning and the retinoid in the evening. The antibiotics are often combined with benzoyl peroxide to reduce the likelihood of developing antibiotic resistance. Examples include clindamycin with benzoyl peroxide (Benzaclin, Duac, others) and erythromycin with benzoyl peroxide (Benzamycin). Topical antibiotics alone aren''t recommended.', CAST(3000.00 AS Decimal(18, 2)))
+GO
+INSERT [dbo].[Treatment] ([TreatmentID], [TreatmentName], [Description], [Cost]) VALUES (2, N'Azelaic acid and salicylic acid', N'Azelaic acid is a naturally occurring acid produced by a yeast. It has antibacterial properties. A 20% azelaic acid cream or gel seems to be as effective as many conventional acne treatments when used twice a day. Prescription azelaic acid (Azelex, Finacea) is an option during pregnancy and while breast-feeding. It can also be used to manage discoloration that occurs with some types of acne. Side effects include skin redness and minor skin irritation.', CAST(2000.00 AS Decimal(18, 2)))
+GO
+INSERT [dbo].[Treatment] ([TreatmentID], [TreatmentName], [Description], [Cost]) VALUES (3, N'Light therapy', N' A variety of light-based therapies have been tried with some success. Most will require multiple visits to your doctor''s office. Further study is needed to determine the ideal method, light source and dose.', CAST(1000.00 AS Decimal(18, 2)))
+GO
+INSERT [dbo].[Treatment] ([TreatmentID], [TreatmentName], [Description], [Cost]) VALUES (4, N'Chemical peel', N'This procedure uses repeated applications of a chemical solution, such as salicylic acid, glycolic acid or retinoic acid. This treatment is for mild acne. It might improve the appearance of the skin, though the change is not long lasting and repeat treatments are usually needed.', CAST(500.00 AS Decimal(18, 2)))
+GO
+INSERT [dbo].[Treatment] ([TreatmentID], [TreatmentName], [Description], [Cost]) VALUES (5, N'Drainage and extraction', N'Your doctor may use special tools to gently remove whiteheads and blackheads (comedos) or cysts that haven''t cleared up with topical medications. This technique temporarily improves the appearance of your skin, but it might also cause scarring.
+', CAST(2000.00 AS Decimal(18, 2)))
+GO
+INSERT [dbo].[Treatment] ([TreatmentID], [TreatmentName], [Description], [Cost]) VALUES (6, N'Steroid injection', N'Nodular and cystic lesions can be treated by injecting a steroid drug into them. This therapy has resulted in rapid improvement and decreased pain. Side effects may include skin thinning and discoloration in the treated area.', CAST(5000.00 AS Decimal(18, 2)))
+GO
+INSERT [dbo].[Treatment] ([TreatmentID], [TreatmentName], [Description], [Cost]) VALUES (8, N'Anti-androgen agents', N'The drug spironolactone (Aldactone) may be considered for women and adolescent girls if oral antibiotics aren''t helping. It works by blocking the effect of androgen hormones on the oil-producing glands. Possible side effects include breast tenderness and painful periods.', CAST(2000.00 AS Decimal(18, 2)))
+GO
+INSERT [dbo].[Treatment] ([TreatmentID], [TreatmentName], [Description], [Cost]) VALUES (9, N'Isotretinoin', N'Isotretinoin (Amnesteem, Claravis, others) is a derivative of vitamin A. It may be prescribed for people whose moderate or severe acne hasn''t responded to other treatments.
+
+Potential side effects of oral isotretinoin include inflammatory bowel disease, depression and severe birth defects. All people receiving isotretinoin must participate in an FDA-approved risk management program. And they''ll need to see their doctors regularly to monitor for side effects.', CAST(3000.00 AS Decimal(18, 2)))
+GO
+SET IDENTITY_INSERT [dbo].[Treatment] OFF
+GO
+/****** Object:  Index [IX_Account_RoleID]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE NONCLUSTERED INDEX [IX_Account_RoleID] ON [dbo].[Account]
+(
+	[RoleID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Appointment_DoctorID]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE NONCLUSTERED INDEX [IX_Appointment_DoctorID] ON [dbo].[Appointment]
+(
+	[DoctorID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Appointment_PatientID]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE NONCLUSTERED INDEX [IX_Appointment_PatientID] ON [dbo].[Appointment]
+(
+	[PatientID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_DetailDoctor_DoctorID]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE NONCLUSTERED INDEX [IX_DetailDoctor_DoctorID] ON [dbo].[DetailDoctor]
+(
+	[DoctorID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_DetailSpecialist_DoctorID]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE NONCLUSTERED INDEX [IX_DetailSpecialist_DoctorID] ON [dbo].[DetailSpecialist]
+(
+	[DoctorID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_DetailSpecialist_RoleSpecialistID]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE NONCLUSTERED INDEX [IX_DetailSpecialist_RoleSpecialistID] ON [dbo].[DetailSpecialist]
+(
+	[RoleSpecialistID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_DetailSpecialist_SpecialistID]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE NONCLUSTERED INDEX [IX_DetailSpecialist_SpecialistID] ON [dbo].[DetailSpecialist]
+(
+	[SpecialistID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Doctor_EmployeeID]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE NONCLUSTERED INDEX [IX_Doctor_EmployeeID] ON [dbo].[Doctor]
+(
+	[EmployeeID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Employee_AccountID]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE NONCLUSTERED INDEX [IX_Employee_AccountID] ON [dbo].[Employee]
+(
+	[AccountID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Invoice_PatientID]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE NONCLUSTERED INDEX [IX_Invoice_PatientID] ON [dbo].[Invoice]
+(
+	[PatientID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Invoice_TreatmentID]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE NONCLUSTERED INDEX [IX_Invoice_TreatmentID] ON [dbo].[Invoice]
+(
+	[TreatmentID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_MedicalReport_PatientID]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE NONCLUSTERED INDEX [IX_MedicalReport_PatientID] ON [dbo].[MedicalReport]
+(
+	[PatientID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Patient_AccountID]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE NONCLUSTERED INDEX [IX_Patient_AccountID] ON [dbo].[Patient]
+(
+	[AccountID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Prescription_MedicationID]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE NONCLUSTERED INDEX [IX_Prescription_MedicationID] ON [dbo].[Prescription]
+(
+	[MedicationID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_Prescription_PatientID]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE NONCLUSTERED INDEX [IX_Prescription_PatientID] ON [dbo].[Prescription]
+(
+	[PatientID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_ReportFromAi_DoctorID]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE NONCLUSTERED INDEX [IX_ReportFromAi_DoctorID] ON [dbo].[ReportFromAi]
+(
+	[DoctorID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_ReportFromAi_PatientID]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE NONCLUSTERED INDEX [IX_ReportFromAi_PatientID] ON [dbo].[ReportFromAi]
+(
+	[PatientID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_RoomClinic_DoctorID]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE NONCLUSTERED INDEX [IX_RoomClinic_DoctorID] ON [dbo].[RoomClinic]
+(
+	[DoctorID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_RoomClinic_SpecialistID]    Script Date: 7/30/2023 7:16:26 PM ******/
+CREATE NONCLUSTERED INDEX [IX_RoomClinic_SpecialistID] ON [dbo].[RoomClinic]
+(
+	[SpecialistID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Account]  WITH CHECK ADD  CONSTRAINT [FK_Account_Role_RoleID] FOREIGN KEY([RoleID])
+REFERENCES [dbo].[Role] ([RoleID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Account] CHECK CONSTRAINT [FK_Account_Role_RoleID]
+GO
+ALTER TABLE [dbo].[Appointment]  WITH CHECK ADD  CONSTRAINT [FK_Appointment_Doctor_DoctorID] FOREIGN KEY([DoctorID])
+REFERENCES [dbo].[Doctor] ([DoctorID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Appointment] CHECK CONSTRAINT [FK_Appointment_Doctor_DoctorID]
+GO
+ALTER TABLE [dbo].[Appointment]  WITH CHECK ADD  CONSTRAINT [FK_Appointment_Patient_PatientID] FOREIGN KEY([PatientID])
+REFERENCES [dbo].[Patient] ([PatientID])
+GO
+ALTER TABLE [dbo].[Appointment] CHECK CONSTRAINT [FK_Appointment_Patient_PatientID]
+GO
+ALTER TABLE [dbo].[DetailDoctor]  WITH CHECK ADD  CONSTRAINT [FK_DetailDoctor_Doctor_DoctorID] FOREIGN KEY([DoctorID])
+REFERENCES [dbo].[Doctor] ([DoctorID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[DetailDoctor] CHECK CONSTRAINT [FK_DetailDoctor_Doctor_DoctorID]
+GO
+ALTER TABLE [dbo].[DetailSpecialist]  WITH CHECK ADD  CONSTRAINT [FK_DetailSpecialist_Doctor_DoctorID] FOREIGN KEY([DoctorID])
+REFERENCES [dbo].[Doctor] ([DoctorID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[DetailSpecialist] CHECK CONSTRAINT [FK_DetailSpecialist_Doctor_DoctorID]
+GO
+ALTER TABLE [dbo].[DetailSpecialist]  WITH CHECK ADD  CONSTRAINT [FK_DetailSpecialist_RoleSpecialist_RoleSpecialistID] FOREIGN KEY([RoleSpecialistID])
+REFERENCES [dbo].[RoleSpecialist] ([RoleSpecialistID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[DetailSpecialist] CHECK CONSTRAINT [FK_DetailSpecialist_RoleSpecialist_RoleSpecialistID]
+GO
+ALTER TABLE [dbo].[DetailSpecialist]  WITH CHECK ADD  CONSTRAINT [FK_DetailSpecialist_Specialist_SpecialistID] FOREIGN KEY([SpecialistID])
+REFERENCES [dbo].[Specialist] ([SpecialistID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[DetailSpecialist] CHECK CONSTRAINT [FK_DetailSpecialist_Specialist_SpecialistID]
+GO
+ALTER TABLE [dbo].[Doctor]  WITH CHECK ADD  CONSTRAINT [FK_Doctor_Employee_EmployeeID] FOREIGN KEY([EmployeeID])
+REFERENCES [dbo].[Employee] ([EmployeeID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Doctor] CHECK CONSTRAINT [FK_Doctor_Employee_EmployeeID]
+GO
+ALTER TABLE [dbo].[Employee]  WITH CHECK ADD  CONSTRAINT [FK_Employee_Account_AccountID] FOREIGN KEY([AccountID])
+REFERENCES [dbo].[Account] ([AccountID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Employee] CHECK CONSTRAINT [FK_Employee_Account_AccountID]
+GO
+ALTER TABLE [dbo].[Invoice]  WITH CHECK ADD  CONSTRAINT [FK_Invoice_Patient_PatientID] FOREIGN KEY([PatientID])
+REFERENCES [dbo].[Patient] ([PatientID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Invoice] CHECK CONSTRAINT [FK_Invoice_Patient_PatientID]
+GO
+ALTER TABLE [dbo].[Invoice]  WITH CHECK ADD  CONSTRAINT [FK_Invoice_Treatment_TreatmentID] FOREIGN KEY([TreatmentID])
+REFERENCES [dbo].[Treatment] ([TreatmentID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Invoice] CHECK CONSTRAINT [FK_Invoice_Treatment_TreatmentID]
+GO
+ALTER TABLE [dbo].[MedicalReport]  WITH CHECK ADD  CONSTRAINT [FK_MedicalReport_Patient_PatientID] FOREIGN KEY([PatientID])
+REFERENCES [dbo].[Patient] ([PatientID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[MedicalReport] CHECK CONSTRAINT [FK_MedicalReport_Patient_PatientID]
+GO
+ALTER TABLE [dbo].[Patient]  WITH CHECK ADD  CONSTRAINT [FK_Patient_Account_AccountID] FOREIGN KEY([AccountID])
+REFERENCES [dbo].[Account] ([AccountID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Patient] CHECK CONSTRAINT [FK_Patient_Account_AccountID]
+GO
+ALTER TABLE [dbo].[Prescription]  WITH CHECK ADD  CONSTRAINT [FK_Prescription_Medication_MedicationID] FOREIGN KEY([MedicationID])
+REFERENCES [dbo].[Medication] ([MedicationID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Prescription] CHECK CONSTRAINT [FK_Prescription_Medication_MedicationID]
+GO
+ALTER TABLE [dbo].[Prescription]  WITH CHECK ADD  CONSTRAINT [FK_Prescription_Patient_PatientID] FOREIGN KEY([PatientID])
+REFERENCES [dbo].[Patient] ([PatientID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[Prescription] CHECK CONSTRAINT [FK_Prescription_Patient_PatientID]
+GO
+ALTER TABLE [dbo].[ReportFromAi]  WITH CHECK ADD  CONSTRAINT [FK_ReportFromAi_Doctor_DoctorID] FOREIGN KEY([DoctorID])
+REFERENCES [dbo].[Doctor] ([DoctorID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[ReportFromAi] CHECK CONSTRAINT [FK_ReportFromAi_Doctor_DoctorID]
+GO
+ALTER TABLE [dbo].[ReportFromAi]  WITH CHECK ADD  CONSTRAINT [FK_ReportFromAi_Patient_PatientID] FOREIGN KEY([PatientID])
+REFERENCES [dbo].[Patient] ([PatientID])
+GO
+ALTER TABLE [dbo].[ReportFromAi] CHECK CONSTRAINT [FK_ReportFromAi_Patient_PatientID]
+GO
+ALTER TABLE [dbo].[RoomClinic]  WITH CHECK ADD  CONSTRAINT [FK_RoomClinic_Doctor_DoctorID] FOREIGN KEY([DoctorID])
+REFERENCES [dbo].[Doctor] ([DoctorID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[RoomClinic] CHECK CONSTRAINT [FK_RoomClinic_Doctor_DoctorID]
+GO
+ALTER TABLE [dbo].[RoomClinic]  WITH CHECK ADD  CONSTRAINT [FK_RoomClinic_Specialist_SpecialistID] FOREIGN KEY([SpecialistID])
+REFERENCES [dbo].[Specialist] ([SpecialistID])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[RoomClinic] CHECK CONSTRAINT [FK_RoomClinic_Specialist_SpecialistID]
+GO
+USE [master]
+GO
+ALTER DATABASE [clinic_kl] SET  READ_WRITE 
+GO

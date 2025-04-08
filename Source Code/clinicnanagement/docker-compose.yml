@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  api_clinicmanagement:
+    image: ${DOCKER_REGISTRY-}apiclinicmanagement
+    ports:
+      - "9000:443"
+    build:
+      context: .
+      dockerfile: ClinicManagement_API/Dockerfile
